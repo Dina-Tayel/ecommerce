@@ -192,6 +192,8 @@ return [
         //yagra buttons
         Yajra\DataTables\DataTablesServiceProvider::class,
         Yajra\DataTables\ButtonsServiceProvider::class,
+        //hardivine cart shopping
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class ,
 
         /*
          * Application Service Providers...
@@ -219,6 +221,7 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
     ])->toArray(),
 
 ];

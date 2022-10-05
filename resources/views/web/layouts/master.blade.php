@@ -40,7 +40,7 @@
     </div>
 
     <!-- Header Area -->
-    <header class="header_area">
+    <header class="header_area" id="header_ajax">
         <!-- Top Header Area -->
         <div class="top-header-area">
             <div class="container h-100">
@@ -89,7 +89,9 @@
                 </div>
             </div>
         </div>
-<x-navbar></x-navbar>
+{{-- <x-navbar></x-navbar> --}}
+
+@include('web.layouts.header')
     </header>
     <!-- Header Area End -->
 
@@ -117,8 +119,10 @@
     <script src="{{ asset('web/assets/js/jarallax-video.min.js') }}"></script>
     <script src="{{ asset('web/assets/js/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('web/assets/js/jquery.nice-select.min.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>                    
     <script src="{{ asset('web/assets/js/wow.min.js') }}"></script>
     <script src="{{ asset('web/assets/js/active.js') }}"></script>
+    
     @stack('scripts')
 </body>
 

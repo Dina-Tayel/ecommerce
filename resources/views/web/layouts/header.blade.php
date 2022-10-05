@@ -1,4 +1,4 @@
-
+<div>
 
     <!-- Main Menu -->
     <div class="bigshop-main-menu">
@@ -62,7 +62,42 @@
                                         </div>
                                     </div>
                                 </li>
-                               
+                                <li><a href="#">Blog</a>
+                                    <ul class="dropdown">
+                                        <li><a href="blog-with-left-sidebar.html">Blog Left Sidebar</a></li>
+                                        <li><a href="blog-with-right-sidebar.html">Blog Right Sidebar</a></li>
+                                        <li><a href="blog-with-no-sidebar.html">Blog No Sidebar</a></li>
+                                        <li><a href="single-blog.html">Single Blog</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Elements</a>
+                                    <div class="megamenu">
+                                        <ul class="single-mega cn-col-4">
+                                            <li><a href="accordian.html">- Accordions</a></li>
+                                            <li><a href="alerts.html">- Alerts</a></li>
+                                            <li><a href="badges.html">- Badges</a></li>
+                                            <li><a href="blockquotes.html">- Blockquotes</a></li>
+                                        </ul>
+                                        <ul class="single-mega cn-col-4">
+                                            <li><a href="breadcrumb.html">- Breadcrumbs</a></li>
+                                            <li><a href="buttons.html">- Buttons</a></li>
+                                            <li><a href="forms.html">- Forms</a></li>
+                                            <li><a href="gallery.html">- Gallery</a></li>
+                                        </ul>
+                                        <ul class="single-mega cn-col-4">
+                                            <li><a href="heading.html">- Headings</a></li>
+                                            <li><a href="icon-fontawesome.html">- Icon FontAwesome</a></li>
+                                            <li><a href="icon-icofont.html">- Icon Ico Font</a></li>
+                                            <li><a href="labels.html">- Labels</a></li>
+                                        </ul>
+                                        <ul class="single-mega cn-col-4">
+                                            <li><a href="modals.html">- Modals</a></li>
+                                            <li><a href="pagination.html">- Pagination</a></li>
+                                            <li><a href="progress-bars.html">- Progress Bars</a></li>
+                                            <li><a href="tables.html">- Tables</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
                                 <li><a href="contact.html">Contact</a></li>
                             </ul>
                         </div>
@@ -87,52 +122,52 @@
 
                         <!-- Cart -->
                         <div class="cart-area">
-                            <div class="cart--btn"><i class="icofont-cart"></i> <span class="cart_quantity" id="cart-countr">{{Cart::instance('shopping')->count()}}</span>
+                            <div class="cart--btn"><i class="icofont-cart"></i> 
+                                <span class="cart_quantity" id="cart_counter">{{Cart::instance('shopping')->count()}}</span>
                             </div>
 
                             <!-- Cart Dropdown Content -->
                             <div class="cart-dropdown-content">
                                 <ul class="cart-list">
+                                    {{-- {{Cart::instance('shopping')->content() }} --}}
+                                    @foreach (Cart::instance('shopping')->content() as $item )
                                     <li>
                                         <div class="cart-item-desc">
                                             <a href="#" class="image">
-                                                <img src="{{ asset('web/img/product-img/top-1.png') }}"
+                                                <img src="{{ asset('uploads/products/'.$item->model->img) }}"
                                                     class="cart-thumb" alt="">
                                             </a>
                                             <div>
-                                                <a href="#">Kid's Fashion</a>
-                                                <p>1 x - <span class="price">$32.99</span></p>
+                                                <a href="{{route('product.details',$item->model->slug)}}">{{ $item->name}}</a>
+                                                <p>{{ $item->qty}} x - <span class="price">${{ $item->price}}</span></p>
                                             </div>
                                         </div>
-                                        <span class="dropdown-product-remove"><i class="icofont-bin"></i></span>
+                                        <span  class="dropdown-product-remove cart-delete"  
+                                        data-product-price="{{ $item->price}}"
+                                         data-product-qty="{{ $item->qty}}" data-product-id="{{$item->rowId}}" 
+                                         id="cart-delete-btn{{$item->id}}" > <i class="icofont-bin"></i></span>
+                                        {{-- <form action="" id="cart-delete-form">
+                                            @csrf
+                                            <button type="submit" class="dropdown-product-remove cart-delete" data-product-price="{{ $item->price}}" data-product-qty="{{ $item->qty}}" data-product-id="{{$item->rowId}}" id="cart-delete-btn{{$item->id}}"  ><i class="icofont-bin"></i></button>
+                                        </form> --}}
                                     </li>
-                                    <li>
-                                        <div class="cart-item-desc">
-                                            <a href="#" class="image">
-                                                <img src="{{ asset('web/img/product-img/best-4.png') }}"
-                                                    class="cart-thumb" alt="">
-                                            </a>
-                                            <div>
-                                                <a href="#">Headphone</a>
-                                                <p>2x - <span class="price">$49.99</span></p>
-                                            </div>
-                                        </div>
-                                        <span class="dropdown-product-remove"><i class="icofont-bin"></i></span>
-                                    </li>
+                                    @endforeach
+                                 
+                                  
                                 </ul>
                                 <div class="cart-pricing my-4">
                                     <ul>
                                         <li>
                                             <span>Sub Total:</span>
-                                            <span>$822.96</span>
+                                            <span>$ {{Cart::subtotal() }}</span>
                                         </li>
                                         <li>
-                                            <span>Shipping:</span>
-                                            <span>$30.00</span>
+                                            <span>Total pieces Count:</span>
+                                            <span>$ {{Cart::count() }}</span>
                                         </li>
                                         <li>
                                             <span>Total:</span>
-                                            <span>$856.63</span>
+                                            <span>{{Cart::subtotal() }}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -186,4 +221,4 @@
             </div>
         </div>
     </div>
-
+</div>
