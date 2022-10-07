@@ -20,6 +20,7 @@ class ProductService
     }
     public function store($data)
     {
+        $data['discount'] = (empty($data['discount'])) ? 0 : $data['discount'];
         $data['img']= $this->uploadFile($data['img'] , 'uploads/products/');
         $data['offer_price']=( $data['price'] - (($data['discount']/100)*100)) ;
         return $this->productRepository->save($data);
@@ -47,6 +48,7 @@ class ProductService
         }
         $data['img'] = !(empty($data['img'])) ? $this->uploadFile($data['img'], 'uploads/products/') : $product->img;
         $data['offer_price'] = ($data['price'] - (($data['discount'] / 100) * 100));
+        $data['discount'] = (empty($data['discount'])) ? 0 : $data['discount'];
 
         return $this->productRepository->update($product, $data);
     }

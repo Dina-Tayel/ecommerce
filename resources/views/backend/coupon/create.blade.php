@@ -11,56 +11,39 @@
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="live-preview">
-                        <form method="POST" action="{{ route('banners.store')}}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('coupon.store')}}" enctype="multipart/form-data">
                             @csrf
                             @method('post')
                        
                         <div class="row gy-12">
                             <div class="col-xxl-12 col-md-12">
                                 <div>
-                                    <label for="basiInput" class="form-label">Title</label>
-                                    <input type="text" name="title"
-                                        class="form-control @error('title') is-invalid @enderror" placeholder="enter title"
-                                        id="basiInput" value="{{ old('title') }}">
+                                    <label for="basiInput" class="form-label">Code</label>
+                                    <input type="text" name="code"
+                                        class="form-control @error('code') is-invalid @enderror" placeholder="enter code"
+                                        id="basiInput" value="{{ old('code') }}">
                                 </div>
                             </div>
                             <!--end col-->
-                            @error('title')
+                            @error('code')
                             <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                         <!--end row-->
-                        <div class="row gy-4">
+                       
+                        <div class="row gy-12">
                             <div class="col-xxl-12 col-md-12">
                                 <div>
-                                    <label for="basiInput" class="form-label">Description</label>
-                                    <textarea id="" name="desc" class="form-control mytextarea @error('desc') is-invalid @enderror"
-                                        placeholder="enter some text..."> {{ old('desc') }}
-                                    </textarea>
+                                    <label for="basiInput" class="form-label">Value</label>
+                                    <input type="text" name="value"
+                                        class="form-control @error('value') is-invalid @enderror" placeholder="enter value"
+                                        id="basiInput" value="{{ old('value') }}">
                                 </div>
-                                @error('desc')
-                                <p class="text-danger">{{ $message }}</p>
-                                @enderror
                             </div>
                             <!--end col-->
-                        </div>
-                        <!--end row-->
-                        <div class="row gy-4">
-                            <div class="col-xxl-12 col-md-12">
-                                <div>
-                                    <label for="basiInput" class="form-label">Banner image</label>
-                                    <input type="file" name="img" class="form-control" id="inputGroupFile01"
-                                        onchange="loadFile(event)">
-                                </div>
-                                <img src="" style="width:100px" class="img-thumbnail image-preview1" id="image">
-                                
-                                <!--end col-->
-                                @error('img')
-                                    <p class="text-danger">{{ $message}}</p>
-                                @enderror
-                            </div>
-                            <!--end row-->
-                            <!--end col-->
+                            @error('value')
+                            <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                         <!--end row-->
                         <div class="row gy-4">
@@ -81,13 +64,13 @@
                         <!--end row-->
                         <div class="row gy-4">
                             <div class="col-xxl-12 col-md-12">
-                                    <label for="basiInput" class="form-label"> Conditions </label>
-                                    <select name="conditions" class="form-select mb-3 @error('conditions') is-invalid @enderror" aria-label="Default select example">
+                                    <label for="basiInput" class="form-label"> Type </label>
+                                    <select name="type" class="form-select mb-3 @error('type') is-invalid @enderror" aria-label="Default select example">
                                         <option selected="" disabled selected> -----Select Condition----- </option>
-                                        <option value="banner" {{old('conditions') =='banner' ? 'selected' : ''}}>Banner</option>
-                                        <option value="promo" {{ old('conditions') =='promo' ? 'selected' :''}}>Promote</option>
+                                        <option value="fixed" {{old('type') =='fixed' ? 'selected' : ''}}>fixed</option>
+                                        <option value="percent" {{ old('type') =='percent' ? 'selected' :''}}>percent</option>
                                     </select>
-                                    @error('conditions')
+                                    @error('percent')
                                     <p class="text-danger">{{ $message }}</p>
                                     @enderror
                             </div>

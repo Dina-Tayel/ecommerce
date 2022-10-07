@@ -35,3 +35,31 @@ $('.cart-delete').click(function(e) {
     // alert(product_id);
 
 })
+
+
+
+
+$.ajax({
+    url : route ,
+    type :'DELETE',
+    data:{
+        _token : token ,
+        product_id : row_id,
+    },success:function(reponse){
+        $('body #cart_counter').html(reponse['cart_count']);
+        $('body #header_ajax').html(reponse['header']);
+        if (reponse['status']) {
+            $('#' + id).remove();
+            swal({
+                title: "Good job!",
+                text: reponse['message'],
+                icon: "success",
+                button: "Ok",
+            });
+
+
+
+        }
+    }
+
+})

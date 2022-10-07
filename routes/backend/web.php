@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Auth\UpdateUserProfileInformation;
+use App\Http\Controllers\Backend\CouponController;
 
 // login
 Auth::routes([ 'login' => false]);
@@ -52,5 +53,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','admin']], function (
      //users
      Route::resource('users',UserController::class);
     Route::get('/users-toggle/{id}', [CategoryController::class, 'toggle'])->name('users.toggle');
+
+    //Coupons 
+    Route::resource('coupon',CouponController::class);
+    Route::get('/coupon-toggle/{id}', [CategoryController::class, 'toggle'])->name('coupon.toggle');
+
      
 });

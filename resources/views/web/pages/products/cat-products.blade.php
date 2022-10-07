@@ -227,13 +227,12 @@
         $('#sortBy').change(function() {
             var sort = $(this).val();
             var url = window.location = "{{ url('' . $route . '') }}/{{ $category->slug }}?sort=" + sort;
-
-            console.log(url);
+            
 
         });
     </script>
     <script>
-        // <!---------------- Ass To cart-------------->
+        // <!---------------- Add To cart-------------->
         $('.add_to_cart').click(function(e) {
             e.preventDefault();
             var product_id = $(this).data('product-id');
@@ -275,6 +274,7 @@
         })
     </script>
     <script>
+        // <!---------------- delete from cart-------------->
         $(document).on('click', '.cart-delete', function(e) {
             var product_id = $(this).data('product-id');
             var product_price = $(this).data('product-price');

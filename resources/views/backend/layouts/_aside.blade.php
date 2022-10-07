@@ -103,5 +103,24 @@
         </div>
     </li> <!-- end users Menu -->
 
+        {{-- Coupons --}}
+        <li class="nav-item">
+            <a class="nav-link menu-link" href="#sidebarCoupons" data-bs-toggle="collapse" role="button"
+                aria-expanded="false" aria-controls="sidebarCoupons">
+                <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Coupons</span>
+            </a>
+            <div class="collapse menu-dropdown" id="sidebarCoupons">
+                <ul class="nav nav-sm flex-column">
+    
+                    <li class="nav-item">
+                        <a href="{{ route('coupon.index') }}" class="nav-link" data-key="t-ecommerce"> All Coupons </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('coupon.create') }}" class="nav-link" data-key="t-ecommerce"> create Coupon </a>
+                    </li>
+                </ul>
+            </div>
+        </li> <!-- end Coupons Menu -->
+    
 
 </ul>

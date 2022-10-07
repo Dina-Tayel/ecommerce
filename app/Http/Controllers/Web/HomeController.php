@@ -22,24 +22,25 @@ class HomeController extends Controller
     public function categoryProducts(Request $request , $slug)
     {
         // $category=Category::where(['slug'=>$slug])->with('products')->first();
-
-        $category = Category::where(['slug' => $slug])->with('products', function ($q) {
-            $q->with('brand');
-        })->first();
+        // $category = Category::where(['slug' => $slug])->with('products', function ($q) {
+        //     $q->with('brand');
+        // })->first();
+        $category=Category::where(['slug'=>$slug])->with('products.brand')->first();
         $cat_id=$category->id ;
         $route='products-cat';
         abort_if($request->sort= null , 404);
         // dd( $request->sort );
         if($request->sort !=null)
         {
-            $sort =$request->sort ;
+            $sort =request()->query('sort') ;
         }
         // dd($category) ;
         if($category == null)
         {
            return abort(404);
         }else{
-            $sort =$request->sort ;
+            $sort =request()->query('sort') ;
+            // dd(request()->query('sort'));
             if($sort == 'titleAsc')
             {
                 $products =Product::where(['status'=>'active' ,'category_id'=>$cat_id])->orderBy('title','ASC')->get();
@@ -52,6 +53,7 @@ class HomeController extends Controller
             }elseif($sort == 'priceDesc')
             {
                 $products =Product::where(['status'=>'active' ,'category_id'=>$cat_id])->orderBy('price','DESC')->get();
+
             }elseif($sort == 'discountAsc')
             {
                 $products =Product::where(['status'=>'active' ,'category_id'=>$cat_id])->orderBy('discount','ASC')->get();
@@ -62,7 +64,8 @@ class HomeController extends Controller
                 $products =Product::where(['status'=>'active' , 'category_id'=>$cat_id])->get();
             }
         }
-        return view('web.pages.cat-products', compact('category','products','route'));
+        // return $products ;
+        return view('web.pages.products.cat-products', compact('category','products','route'));
     }
 
     public function productDetails($slug)

@@ -142,7 +142,7 @@
                                                 <p>{{ $item->qty}} x - <span class="price">${{ $item->price}}</span></p>
                                             </div>
                                         </div>
-                                        <span  class="dropdown-product-remove cart-delete"  
+                                        <span  class="dropdown-product-remove cart-delete"  data-id="{{ $item->rowId }}"
                                         data-product-price="{{ $item->price}}"
                                          data-product-qty="{{ $item->qty}}" data-product-id="{{$item->rowId}}" 
                                          id="cart-delete-btn{{$item->id}}" > <i class="icofont-bin"></i></span>
@@ -163,7 +163,7 @@
                                         </li>
                                         <li>
                                             <span>Total pieces Count:</span>
-                                            <span>$ {{Cart::count() }}</span>
+                                            <span>{{Cart::count() }}</span>
                                         </li>
                                         <li>
                                             <span>Total:</span>
@@ -171,8 +171,9 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="cart-box">
-                                    <a href="checkout-1.html" class="btn btn-primary d-block">Checkout</a>
+                                <div class="cart-box d-flex">
+                                    <a href="{{ route('cart')}}" class="btn btn-success btn-sm mr-1 ">Cart</a>
+                                    <a href="checkout-1.html" class="btn btn-primary btn-sm ml-1">Checkout</a>
                                 </div>
                             </div>
                         </div>

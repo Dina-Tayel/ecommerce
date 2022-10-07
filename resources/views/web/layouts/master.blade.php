@@ -89,7 +89,6 @@
                 </div>
             </div>
         </div>
-{{-- <x-navbar></x-navbar> --}}
 
 @include('web.layouts.header')
     </header>
