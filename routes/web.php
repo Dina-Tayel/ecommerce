@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\BannerController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\CartController;
+use App\Http\Controllers\Web\CouponController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\UserController;
 
@@ -24,7 +25,7 @@ Route::get('seller', [AdminController::class, 'index'])->name('seller')->middlew
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('home');
-Route::get('products-cat/{slug}', [HomeController::class, 'categoryProducts'])->name('category.products');
+Route::get('products-cat/{category:slug}', [HomeController::class, 'categoryProducts'])->name('category.products');
 Route::get('product-details/{slug}', [HomeController::class, 'productDetails'])->name('product.details');
 
 
@@ -44,7 +45,11 @@ Route::group(['prefix'=>'user'] , function(){
     Route::get('/cart',[CartController::class,'cart'])->name('cart');
     Route::post('cart/store',[CartController::class,'store'])->name('cart.store');
     Route::delete('cart/delete',[CartController::class,'delete'])->name('cart.delete');
+    Route::post('cart/update',[CartController::class,'update'])->name('cart.update') ;
 
+    //coupon
+    Route::post('coupon/add',[CouponController::class,'couponAdd'])->name('coupon.add') ;
+    
 
 
 });

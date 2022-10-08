@@ -90,7 +90,7 @@
             </div>
         </div>
 
-@include('web.layouts.header')
+        @include('web.layouts.header')
     </header>
     <!-- Header Area End -->
 
@@ -118,10 +118,51 @@
     <script src="{{ asset('web/assets/js/jarallax-video.min.js') }}"></script>
     <script src="{{ asset('web/assets/js/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('web/assets/js/jquery.nice-select.min.js') }}"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>                    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="{{ asset('web/assets/js/wow.min.js') }}"></script>
     <script src="{{ asset('web/assets/js/active.js') }}"></script>
-    
+    <script>
+        // <!---------------- delete from cart-------------->
+        $(document).on('click', '.cart-delete', function(e) {
+            var product_id = $(this).data('product-id');
+            var product_price = $(this).data('product-price');
+            var product_qty = $(this).data('product-qty');
+            var token = "{{ csrf_token() }}";
+            var route = "{{ route('cart.delete') }}";
+            $.ajax({
+                url: route,
+                type: 'DELETE',
+                data: {
+                    _token: token,
+                    product_id: product_id,
+                    product_price: product_price,
+                    product_qty: product_qty,
+                },
+                success: function(data) {
+                    $('body #cart_counter').html(data['cart_count']);
+                    $('body #header_ajax').html(data['header']);
+                    $('body #cart_list').html(data['cart_list']);
+                    $('#' + product_id).remove();
+
+                    if (data['status']) {
+                        swal({
+                            title: "Good job!",
+                            text: data['message'],
+                            icon: "success",
+                            button: "Ok",
+                        });
+
+
+
+                    }
+                }
+            })
+
+
+        });
+    </script>
+   
+
     @stack('scripts')
 </body>
 

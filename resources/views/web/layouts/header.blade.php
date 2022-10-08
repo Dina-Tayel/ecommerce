@@ -122,59 +122,78 @@
 
                         <!-- Cart -->
                         <div class="cart-area">
-                            <div class="cart--btn"><i class="icofont-cart"></i> 
-                                <span class="cart_quantity" id="cart_counter">{{Cart::instance('shopping')->count()}}</span>
+                            <div class="cart--btn"><i class="icofont-cart"></i>
+                                <span class="cart_quantity"
+                                    id="cart_counter">{{ Cart::instance('shopping')->count() }}</span>
                             </div>
 
                             <!-- Cart Dropdown Content -->
                             <div class="cart-dropdown-content">
                                 <ul class="cart-list">
                                     {{-- {{Cart::instance('shopping')->content() }} --}}
-                                    @foreach (Cart::instance('shopping')->content() as $item )
-                                    <li>
-                                        <div class="cart-item-desc">
-                                            <a href="#" class="image">
-                                                <img src="{{ asset('uploads/products/'.$item->model->img) }}"
-                                                    class="cart-thumb" alt="">
-                                            </a>
-                                            <div>
-                                                <a href="{{route('product.details',$item->model->slug)}}">{{ $item->name}}</a>
-                                                <p>{{ $item->qty}} x - <span class="price">${{ $item->price}}</span></p>
+                                    
+                                    @foreach (Cart::instance('shopping')->content() as $item)
+                                        <li>
+                                            <div class="cart-item-desc">
+                                                <a href="#" class="image">
+                                                    <img src="{{ asset('uploads/products/' . $item->model->img) }}"
+                                                        class="cart-thumb" alt="">
+                                                </a>
+                                                <div>
+                                                    <a
+                                                        href="{{ route('product.details', $item->model->slug) }}">{{ $item->name }}</a>
+                                                    <p>{{ $item->qty }} x - <span
+                                                            class="price">${{ $item->price }}</span></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <span  class="dropdown-product-remove cart-delete"  data-id="{{ $item->rowId }}"
-                                        data-product-price="{{ $item->price}}"
-                                         data-product-qty="{{ $item->qty}}" data-product-id="{{$item->rowId}}" 
-                                         id="cart-delete-btn{{$item->id}}" > <i class="icofont-bin"></i></span>
-                                        {{-- <form action="" id="cart-delete-form">
+                                            <span class="dropdown-product-remove cart-delete"
+                                                data-id="{{ $item->rowId }}"
+                                                data-product-price="{{ $item->price }}"
+                                                data-product-qty="{{ $item->qty }}"
+                                                data-product-id="{{ $item->rowId }}"
+                                                id="cart-delete-btn{{ $item->id }}"> <i
+                                                    class="icofont-bin"></i></span>
+                                            {{-- <form action="" id="cart-delete-form">
                                             @csrf
                                             <button type="submit" class="dropdown-product-remove cart-delete" data-product-price="{{ $item->price}}" data-product-qty="{{ $item->qty}}" data-product-id="{{$item->rowId}}" id="cart-delete-btn{{$item->id}}"  ><i class="icofont-bin"></i></button>
                                         </form> --}}
-                                    </li>
+                                        </li>
                                     @endforeach
-                                 
-                                  
+
+
                                 </ul>
+                                @if (Cart::instance('shopping')->content())
+                                        
                                 <div class="cart-pricing my-4">
                                     <ul>
                                         <li>
                                             <span>Sub Total:</span>
-                                            <span>$ {{Cart::subtotal() }}</span>
+                                            <span>$ {{ Cart::subtotal() }}</span>
                                         </li>
                                         <li>
                                             <span>Total pieces Count:</span>
-                                            <span>{{Cart::count() }}</span>
+                                            <span>{{ Cart::count() }}</span>
                                         </li>
                                         <li>
-                                            <span>Total:</span>
-                                            <span>{{Cart::subtotal() }}</span>
+
+                                            @if (session()->has('coupon'))
+                                                <span> Total:</span>
+                                                <span> $
+                                                    {{ filter_var(Cart::subtotal(), FILTER_SANITIZE_NUMBER_INT) - session('coupon')['total_price'] }}</span>
+                                            @else
+                                                <span> Total:</span>
+
+                                                <span>$ {{ Cart::subtotal() }}</span>
+                                            @endif
+
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="cart-box d-flex">
-                                    <a href="{{ route('cart')}}" class="btn btn-success btn-sm mr-1 ">Cart</a>
+                                    <a href="{{ route('cart') }}" class="btn btn-success btn-sm mr-1 ">Cart</a>
                                     <a href="checkout-1.html" class="btn btn-primary btn-sm ml-1">Checkout</a>
                                 </div>
+                                @endif
                             </div>
                         </div>
 
@@ -187,7 +206,7 @@
                                     @else
                                         <img src="{{ Helper::userDefaultImage() }}" alt="">
                                     @endif
-                                    @else
+                                @else
                                     <img src="{{ Helper::userDefaultImage() }}" alt="">
 
                                 @endauth

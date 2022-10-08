@@ -19,53 +19,32 @@ class HomeController extends Controller
         return view('web.home', compact('banners', 'categories', 'new_products'));
     }
 
-    public function categoryProducts(Request $request , $slug)
+    public function categoryProducts(Category $category, Request $request)
     {
-        // $category=Category::where(['slug'=>$slug])->with('products')->first();
-        // $category = Category::where(['slug' => $slug])->with('products', function ($q) {
-        //     $q->with('brand');
-        // })->first();
-        $category=Category::where(['slug'=>$slug])->with('products.brand')->first();
-        $cat_id=$category->id ;
-        $route='products-cat';
-        abort_if($request->sort= null , 404);
-        // dd( $request->sort );
-        if($request->sort !=null)
-        {
-            $sort =request()->query('sort') ;
-        }
-        // dd($category) ;
-        if($category == null)
-        {
-           return abort(404);
-        }else{
-            $sort =request()->query('sort') ;
-            // dd(request()->query('sort'));
-            if($sort == 'titleAsc')
-            {
-                $products =Product::where(['status'=>'active' ,'category_id'=>$cat_id])->orderBy('title','ASC')->get();
-            }elseif($sort == 'titleDesc')
-            {
-                $products =Product::where(['status'=>'active' ,'category_id'=>$cat_id])->orderBy('title','DESC')->get();
-            }elseif($sort == 'priceAsc')
-            {
-                $products =Product::where(['status'=>'active' ,'category_id'=>$cat_id])->orderBy('price','ASC')->get();
-            }elseif($sort == 'priceDesc')
-            {
-                $products =Product::where(['status'=>'active' ,'category_id'=>$cat_id])->orderBy('price','DESC')->get();
+        $route = 'products-cat';
 
-            }elseif($sort == 'discountAsc')
-            {
-                $products =Product::where(['status'=>'active' ,'category_id'=>$cat_id])->orderBy('discount','ASC')->get();
-            }elseif($sort == 'discountDesc')
-            {
-                $products =Product::where(['status'=>'active' ,'category_id'=>$cat_id])->orderBy('discount','DESC')->get();
-            }else{
-                $products =Product::where(['status'=>'active' , 'category_id'=>$cat_id])->get();
-            }
-        }
-        // return $products ;
-        return view('web.pages.products.cat-products', compact('category','products','route'));
+        $sort = $request->get('sort') ?? null;
+
+        if (!$category)
+            return abort(404);
+
+        $products = Product::active()
+            ->when($sort == 'titleAsc', function ($query) {
+                $query->orderBy('title', 'ASC');
+            })->when($sort == 'titleDesc', function ($query) {
+                $query->orderBy('title', 'DESC');
+            })->when($sort == 'priceAsc', function ($query) {
+                $query->orderBy('price', 'ASC');
+            })->when($sort == 'priceDesc', function ($query) {
+                $query->orderBy('price', 'DESC');
+            })->when($sort == 'discountAsc', function ($query) {
+                $query->orderBy('discount', 'ASC');
+            })->when($sort == 'discountDesc', function ($query) {
+                $query->orderBy('discount', 'DESC');
+            })
+            ->where(['category_id' => $category->id])->get();
+
+        return view('web.pages.products.cat-products', compact('category', 'products', 'route'));
     }
 
     public function productDetails($slug)

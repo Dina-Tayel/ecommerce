@@ -32,6 +32,7 @@ $('.cart-delete').click(function(e) {
         }
     })
 
+
     // alert(product_id);
 
 })
@@ -61,5 +62,99 @@ $.ajax({
 
         }
     }
+
+})
+
+
+$('.qty-text').click(function(){
+    var row_id =$(this).data('id');
+    var spinner = $(this);
+    var input=spinner.closest('div.quantity').find('input[type="number"]');
+    if(input.val() ==1 )
+    {
+        return false ;
+    }else{
+
+        var newVal=parseFloat( spinner.val()) ;
+        $('#qty-input-'+row_id).val(newVal);
+    }
+    var pro = $('#qty-input-'+row_id).val();
+    
+    console.log(pro);
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$('.dropdown-product-remove').click(function() {
+    var id = $('.product_row').data('id');
+    var row_id = $(this).data('id');
+    var route = "{{ route('cart.delete') }}";
+    var token = "{{ csrf_token() }}";
+    $.ajax({
+        url: route,
+        type: 'DELETE',
+        data: {
+            _token: token,
+            product_id: row_id,
+        },
+        success: function(reponse) {
+            $('body #cart_counter').html(reponse['cart_count']);
+            $('body #header_ajax').html(reponse['header']);
+            if (reponse['status']) {
+                $('#' + id).remove();
+                swal({
+                    title: "Good job!",
+                    text: reponse['message'],
+                    icon: "success",
+                    button: "Ok",
+                });
+            }
+        }
+
+    })
 
 })

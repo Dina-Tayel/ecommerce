@@ -40,7 +40,8 @@
                 <!-- Single Catagory -->
                 <div class="col-12 col-md-4">
                     <div class="single_catagory_area mt-50">
-                        <a href="{{ route('category.products' , $category->slug) }}">
+                        <a href="{{ route('category.products' , $category->slug) }} ">
+                        {{-- <a href="{{route('category.products')}}?product={{ $category->slug }} " > --}}
                             <img src="{{ $category->image_path }}" alt="">
                         </a>
                     </div>

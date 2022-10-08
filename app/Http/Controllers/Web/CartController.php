@@ -55,7 +55,8 @@ class CartController extends Controller
             $header = view('web.layouts.header')->render();
         }
         $response['header'] = $header;
-        return json_encode($response);
+        // return json_encode($response);
+        return $response;
     }
 
     public function delete(Request $request)
@@ -71,9 +72,43 @@ class CartController extends Controller
         $response['message'] = 'item is deleted in your cart successfully';
         if ($request->ajax()) {
             $header = view('web.layouts.header')->render();
+            $cart_list = view('web.layouts._cart-list')->render();
+            $response['header'] = $header;
+            $response['cart_list'] = $cart_list;
         }
-        $response['header'] = $header;
-        return $response ;
+        return $response;
         // return json_encode($response);
+    }
+
+    public function update(Request $request)
+    {
+
+        $rowId = $request->row_id;
+        $product_stock = $request->stock;
+        $product_qty = $request->product_qty;
+        if ($product_qty < 1) {
+            $response['status'] = false;
+            $message = 'You Cant add less than one item';
+        } elseif ($product_qty > $product_stock) {
+            $response['status'] = false;
+            $message = 'You Cant add more items';
+        } else {
+            Cart::instance('shopping')->update($rowId, $product_qty);
+            $response['status'] = true;
+
+            $response['total'] = Cart::subtotal();
+            $response['cart_count'] = Cart::instance('shopping')->count();
+
+            $message = 'item is addedd successfully';
+        }
+
+        if ($request->ajax()) {
+            $header = view('web.layouts.header')->render();
+            $cart_list = view('web.layouts._cart-list')->render();
+            $response['header'] = $header;
+            $response['cart_list'] = $cart_list;
+            $response['message'] = $message;
+        }
+        return $response;
     }
 }

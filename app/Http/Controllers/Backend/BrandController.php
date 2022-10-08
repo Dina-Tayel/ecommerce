@@ -10,9 +10,6 @@ use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
-
-
-
     public $brandService;
 
     public function __construct(BrandService $brandService)

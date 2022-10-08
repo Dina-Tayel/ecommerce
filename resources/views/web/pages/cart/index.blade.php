@@ -7,7 +7,7 @@
                 <div class="col-12">
                     <h5>Cart</h5>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                         <li class="breadcrumb-item active">Cart</li>
                     </ol>
                 </div>
@@ -22,45 +22,8 @@
             <div class="row justify-content-between">
                 <div class="col-12">
                     <div class="cart-table">
-                        <div class="table-responsive">
-                            <table class="table table-bordered mb-30">
-                                <thead>
-                                    <tr>
-                                        <th scope="col"><i class="icofont-ui-delete"></i></th>
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Unit Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (Gloudemans\Shoppingcart\Facades\Cart::instance('shopping')->content() as $item)
-                                        <tr class="product_row" data-id="{{ $item->rowId }}" id="{{ $item->rowId }}">
-                                            <th scope="row">
-                                                <i class="icofont-close cart_delete" data-id="{{ $item->rowId }}"></i>
-                                            </th>
-                                            <td>
-                                                <img src="{{ asset('uploads/products/' . $item->model->img) }}"
-                                                    alt="Product">
-                                            </td>
-                                            <td>
-                                                <a
-                                                    href="{{ route('product.details', $item->model->slug) }}">{{ $item->name }}</a>
-                                            </td>
-                                            <td>${{ $item->price }}</td>
-                                            <td>
-                                                <div class="quantity">
-                                                    <input type="number" class="qty-text" id="qty6" step="1"
-                                                        min="1" max="99" name="quantity"
-                                                        value="{{ $item->qty }}">
-                                                </div>
-                                            </td>
-                                            <td>${{ $item->subtotal() }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div class="table-responsive" id="cart_list">
+                            @include('web.layouts._cart-list')
                         </div>
                     </div>
                 </div>
@@ -70,10 +33,13 @@
                         <h6>Have a Coupon?</h6>
                         <p>Enter your coupon code here &amp; get awesome discounts!</p>
                         <!-- Form -->
+                       @include('web.partials._session_messages')
                         <div class="coupon-form">
-                            <form action="#">
-                                <input type="text" class="form-control" placeholder="Enter Your Coupon Code">
-                                <button type="submit" class="btn btn-primary">Apply Coupon</button>
+                            <form action="{{ route('coupon.add') }}" method="POST" id="coupon-form">
+                                @csrf
+                                <input type="text" name="coupon" class="form-control" id="coupon-name"
+                                    placeholder="Enter Your Coupon Code">
+                                <button type="submit" class="btn btn-primary coupon-btn">Apply Coupon</button>
                             </form>
                         </div>
                     </div>
@@ -114,7 +80,8 @@
 @endsection
 @push('scripts')
     <script>
-        $('.cart_delete').click(function() {
+        $('.cart_list_delete').click(function() {
+            // alert('kjs');
             var id = $('.product_row').data('id');
             var row_id = $(this).data('id');
             var route = "{{ route('cart.delete') }}";
@@ -142,6 +109,64 @@
 
             })
 
+        })
+    </script>
+
+    <script>
+        $('.qty-text').click(function() {
+            var row_id = $(this).data('id');
+            var input = $(this).closest('div.quantity').find('input[type="number"]');
+            // alert(spinner.val());
+            if (input.val() == 1) {
+                return false;
+            } else {
+                var newVal = $('#qty-input-' + row_id).val(input.val());
+            }
+            var product_qty = $('#qty-input-' + row_id).val();
+            updateCart(row_id, product_qty)
+
+        });
+
+        function updateCart(id, product_qty) {
+            var row_id = id;
+            var product_qty = product_qty;
+            var stock = $('#product-stock-' + row_id).data('stock');
+            var route = "{{ route('cart.update') }}";
+            var token = "{{ csrf_token() }}";
+            $.ajax({
+                url: route,
+                type: 'POST',
+                data: {
+                    _token: token,
+                    row_id: row_id,
+                    stock: stock,
+                    product_qty: product_qty,
+                },
+                success: function(reponse) {
+                    $('body #cart_counter').html(reponse['cart_count']);
+                    $('body #header_ajax').html(reponse['header']);
+                    if (reponse['status']) {
+                        $('body #cart_list').html(respose['cart_list'])
+                        swal({
+                            title: "Good job!",
+                            text: reponse['message'],
+                            icon: "success",
+                            button: "Ok",
+                        });
+                    } else {
+                        alert(reponse['message'])
+                    }
+                }
+            })
+        }
+    </script>
+    <script>
+        $('.coupon-btn').click(function(e) {
+            e.preventDefault();
+            // var coupon = $('input[name=coupon]').val();
+            var coupon = $('#coupon-name').val();
+            $('.coupon-btn').html('loading...');
+            $('#coupon-form').submit();
         })
     </script>
 @endpush
