@@ -21,6 +21,7 @@ class CartController extends Controller
         $product = Product::where('id', $product_id)->get()->toArray();
         $price = $product[0]['offer_price'];
         // $product = Product::where('id',$product_id)->first();
+        $cart_array=[] ;
         foreach (Cart::instance('shopping')->content() as $item) {
             $cart_array[] = $item->id;
         };

@@ -12,15 +12,19 @@ class Product extends Model
     protected $guarded = [];
     protected $append = ['image_path'] ;
 
+    //acccesores and mutators
     public function getImagePathAttribute()
     {
         return  asset('uploads/products/' . $this->img);
     }
 
+    //scopes
     public function scopeActive($query)
     {
         return $query->where('status','active');
     }
+
+    //relationships
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id')->where('is_parent', 1);

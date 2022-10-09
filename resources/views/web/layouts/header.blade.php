@@ -117,7 +117,11 @@
 
                         <!-- Wishlist -->
                         <div class="wishlist-area">
-                            <a href="wishlist.html" class="wishlist-btn"><i class="icofont-heart"></i></a>
+                            <a href="{{ route('wishlist')}}" class="wishlist-btn">
+                                <i class="icofont-heart"></i>
+                                <span class="cart_quantity"
+                                    id="wishlist_counter">{{ Cart::instance('wishlist')->count() }}</span>
+                            </a>
                         </div>
 
                         <!-- Cart -->
@@ -128,10 +132,12 @@
                             </div>
 
                             <!-- Cart Dropdown Content -->
+                            
+                            @if (Cart::instance('shopping')->count() > 0)
                             <div class="cart-dropdown-content">
                                 <ul class="cart-list">
                                     {{-- {{Cart::instance('shopping')->content() }} --}}
-                                    
+
                                     @foreach (Cart::instance('shopping')->content() as $item)
                                         <li>
                                             <div class="cart-item-desc">
@@ -162,39 +168,43 @@
 
 
                                 </ul>
-                                @if (Cart::instance('shopping')->content())
-                                        
-                                <div class="cart-pricing my-4">
-                                    <ul>
-                                        <li>
-                                            <span>Sub Total:</span>
-                                            <span>$ {{ Cart::subtotal() }}</span>
-                                        </li>
-                                        <li>
-                                            <span>Total pieces Count:</span>
-                                            <span>{{ Cart::count() }}</span>
-                                        </li>
-                                        <li>
 
-                                            @if (session()->has('coupon'))
-                                                <span> Total:</span>
-                                                <span> $
-                                                    {{ filter_var(Cart::subtotal(), FILTER_SANITIZE_NUMBER_INT) - session('coupon')['total_price'] }}</span>
-                                            @else
-                                                <span> Total:</span>
 
+                                    <div class="cart-pricing my-4">
+                                        <ul>
+                                            <li>
+                                                <span>Sub Total:</span>
                                                 <span>$ {{ Cart::subtotal() }}</span>
-                                            @endif
+                                            </li>
+                                            <li>
+                                                <span>Total pieces Count:</span>
+                                                <span>{{ Cart::count() }}</span>
+                                            </li>
+                                            <li>
 
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="cart-box d-flex">
-                                    <a href="{{ route('cart') }}" class="btn btn-success btn-sm mr-1 ">Cart</a>
-                                    <a href="checkout-1.html" class="btn btn-primary btn-sm ml-1">Checkout</a>
-                                </div>
-                                @endif
+                                                @if (session()->has('coupon'))
+                                                    <span> Total:</span>
+                                                    <span>${{ str_replace(',', '', Cart::subtotal()) - session()->get('coupon')['total'] }}</span>
+                                                    {{-- <span> $
+
+                                                        {{ filter_var(Cart::subtotal(), FILTER_SANITIZE_NUMBER_INT) - session('coupon')['total_price'] }}
+                                                    </span> --}}
+                                                @else
+                                                    <span> Total:</span>
+
+                                                    <span>$ {{ Cart::subtotal() }}</span>
+                                                @endif
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="cart-box d-flex">
+                                        <a href="{{ route('cart') }}" class="btn btn-success btn-sm mr-1 ">Cart</a>
+                                        <a href="checkout-1.html" class="btn btn-primary btn-sm ml-1">Checkout</a>
+                                    </div>
+                            
                             </div>
+                            @endif
                         </div>
 
                         <!-- Account -->
@@ -218,7 +228,7 @@
                                     <li class="user-title"><span>Hello,</span>{{ auth()->user()->fullname }}</li>
                                     <li><a href="{{ route('user.dashboard') }}">My Account</a></li>
                                     <li><a href="{{ route('user.order') }}">Orders List</a></li>
-                                    <li><a href="wishlist.html">Wishlist</a></li>
+                                    <li><a href="{{ route('wishlist')}}">Wishlist</a></li>
                                     <li><a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();"><i

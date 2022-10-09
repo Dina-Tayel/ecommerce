@@ -158,3 +158,17 @@ $('.dropdown-product-remove').click(function() {
     })
 
 })
+
+$route = 'products-cat' ;
+        $sort = $request->get('sort') ?? null ;
+        $item = explode('_', $sort) ;
+        $array = ['title', 'price', 'discount' ,'Asc', 'Desc'] ;
+        if (in_array($item[0], $array) && in_array($item[1], $array)) {
+            $products = Product::active()->when($request->has('sort'), function ($query) use ($item) {
+                $query->orderBy($item[0], $item[1]);
+            })->where(['category_id' => $category->id])->get();
+
+        } else {
+            $products = Product::active()->where(['category_id' => $category->id])->get();
+        }
+        return view('web.pages.products.cat-products', compact('category', 'products', 'route'));

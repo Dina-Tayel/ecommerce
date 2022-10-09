@@ -112,17 +112,20 @@
                         {{-- {{dd($category)}} --}}
                         <select class="small right" id="sortBy">
                             <option selected>Default sort</option>
-                            <option value="priceAsc" {{ request()->query('sort') == 'priceAsc' ? 'selected' : '' }}>price
+                            <option value="price_Asc" {{ request()->query('sort') == 'price_Asc' ? 'selected' : '' }}>price
                                 Ascending to Descending</option>
-                            <option value="priceDesc" {{ request()->query('sort') == 'priceDesc' ? 'selected' : '' }}>price
+                            <option value="price_Desc" {{ request()->query('sort') == 'price_Desc' ? 'selected' : '' }}>
+                                price
                                 Descending to Ascending</option>
-                            <option value="titleAsc" {{ request()->query('sort') == 'titleAsc' ? 'selected' : '' }}>
+                            <option value="title_Asc" {{ request()->query('sort') == 'title_Asc' ? 'selected' : '' }}>
                                 Alphabetical Ascending </option>
-                            <option value="titleDesc" {{ request()->query('sort') == 'titleDesc' ? 'selected' : '' }}>
+                            <option value="title_Desc" {{ request()->query('sort') == 'title_Desc' ? 'selected' : '' }}>
                                 Alphabetical Descending</option>
-                            <option value="discountAsc" {{ request()->query('sort') == 'discountAsc' ? 'selected' : '' }}>
+                            <option value="discount_Asc"
+                                {{ request()->query('sort') == 'discount_Asc' ? 'selected' : '' }}>
                                 Discount Ascending to Descending</option>
-                            <option value="discountDesc"{{ request()->query('sort') == 'discountDesc' ? 'selected' : '' }}>
+                            <option
+                                value="discount_Desc"{{ request()->query('sort') == 'discount_Desc' ? 'selected' : '' }}>
                                 Discount Descending to Ascending</option>
 
                         </select>
@@ -223,16 +226,18 @@
 @push('scripts')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+    <!---------------- products filter -------------->
     <script>
         $('#sortBy').change(function() {
             var sort = $(this).val();
             var url = window.location = "{{ url('' . $route . '') }}/{{ $category->slug }}?sort=" + sort;
-            
+
 
         });
     </script>
+
+    <!---------------- Add To cart-------------->
     <script>
-        // <!---------------- Add To cart-------------->
         $('.add_to_cart').click(function(e) {
             e.preventDefault();
             var product_id = $(this).data('product-id');
@@ -273,8 +278,9 @@
             })
         })
     </script>
+
+    <!---------------- delete from cart-------------->
     <script>
-        // <!---------------- delete from cart-------------->
         $(document).on('click', '.cart-delete', function(e) {
             var product_id = $(this).data('product-id');
             var product_price = $(this).data('product-price');
@@ -311,6 +317,61 @@
 
         })
     </script>
+
+    <!---------------- add to wishlist-------------->
+    <script>
+        $(document).on('click', '.add-to-wishlist', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var product_qty = $(this).data('qty');
+            var token = "{{ csrf_token() }}";
+            var route = "{{ route('wishlist.store') }}";
+            $.ajax({
+                url: route,
+                type: 'POST',
+                data: {
+                    _token: token,
+                    product_id: id,
+                    product_qty: product_qty,
+                },
+                beforeSend: function() {
+                    $('#add-to-wishlist-' + id).html(
+                        '<li class="fa fa-spinner" aria-hidden="true"></li>');
+                },
+                complete: function() {
+                    $('#add-to-wishlist-' + id).html('<i class="icofont-heart"> </i>');
+
+                },
+                success: function(response) {
+                    if (response['present']) {
+                        swal({
+                            title: "oops!",
+                            text: response['message'],
+                            icon: "warning",
+                            button: "Ok",
+                        });
+                    } else if (response['status']) {
+                        $('body #header_ajax').html(response['header']);
+                        $('body #wishlist_counter').html(response['wishlist_count']);
+                        swal({
+                            title: "Good job!",
+                            text: response['message'],
+                            icon: "success",
+                            button: "Ok",
+                        });
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: 'something wrong happwnd can not add this item',
+                            icon: "warning",
+                            button: "Ok",
+                        });
+                    }
+                }
+            })
+        })
+    </script>
+    
     <script>
         function loadmoreData(page) {
             $.ajax({

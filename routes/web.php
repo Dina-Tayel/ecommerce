@@ -11,6 +11,7 @@ use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CouponController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\UserController;
+use App\Http\Controllers\WishlistController;
 
 Route::get('/', [HomeController::class, 'home']);
 
@@ -50,6 +51,12 @@ Route::group(['prefix'=>'user'] , function(){
     //coupon
     Route::post('coupon/add',[CouponController::class,'couponAdd'])->name('coupon.add') ;
     
+    //wishlist
+    Route::get('/wishlist',[WishlistController::class,'index'])->name('wishlist');
+    Route::post('/wishlist/store',[WishlistController::class,'wishlistStore'])->name('wishlist.store');
+    Route::post('/wishlist/move-to-cart',[WishlistController::class,'MoveToCart'])->name('wishlist.move.cart');
+    Route::post('/wishlist/delete',[WishlistController::class,'wishlistDelete'])->name('wishlist.delete');
+
 
 
 });

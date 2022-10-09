@@ -21,29 +21,43 @@ class HomeController extends Controller
 
     public function categoryProducts(Category $category, Request $request)
     {
-        $route = 'products-cat';
+        // $route = 'products-cat';
 
-        $sort = $request->get('sort') ?? null;
+        // $sort = $request->get('sort') ?? null;
 
-        if (!$category)
-            return abort(404);
+        // if (!$category)
+        //     return abort(404);
 
-        $products = Product::active()
-            ->when($sort == 'titleAsc', function ($query) {
-                $query->orderBy('title', 'ASC');
-            })->when($sort == 'titleDesc', function ($query) {
-                $query->orderBy('title', 'DESC');
-            })->when($sort == 'priceAsc', function ($query) {
-                $query->orderBy('price', 'ASC');
-            })->when($sort == 'priceDesc', function ($query) {
-                $query->orderBy('price', 'DESC');
-            })->when($sort == 'discountAsc', function ($query) {
-                $query->orderBy('discount', 'ASC');
-            })->when($sort == 'discountDesc', function ($query) {
-                $query->orderBy('discount', 'DESC');
-            })
-            ->where(['category_id' => $category->id])->get();
+        // $products = Product::active()
+        //     ->when($sort == 'titleAsc', function ($query) {
+        //         $query->orderBy('title', 'ASC');
+        //     })->when($sort == 'titleDesc', function ($query) {
+        //         $query->orderBy('title', 'DESC');
+        //     })->when($sort == 'priceAsc', function ($query) {
+        //         $query->orderBy('price', 'ASC');
+        //     })->when($sort == 'priceDesc', function ($query) {
+        //         $query->orderBy('price', 'DESC');
+        //     })->when($sort == 'discountAsc', function ($query) {
+        //         $query->orderBy('discount', 'ASC');
+        //     })->when($sort == 'discountDesc', function ($query) {
+        //         $query->orderBy('discount', 'DESC');
+        //     })
+        //     ->where(['category_id' => $category->id])->get();
 
+        // return view('web.pages.products.cat-products', compact('category', 'products', 'route'));
+
+        $route = 'products-cat' ;
+        $sort = $request->get('sort') ?? null ;
+        $item = explode('_', $sort) ;
+        $array = ['title', 'price', 'discount' ,'Asc', 'Desc'] ;
+        if (in_array($item[0], $array) && in_array($item[1], $array)) {
+            $products = Product::active()->when($request->has('sort'), function ($query) use ($item) {
+                $query->orderBy($item[0], $item[1]);
+            })->where(['category_id' => $category->id])->get();
+
+        } else {
+            $products = Product::active()->where(['category_id' => $category->id])->get();
+        }
         return view('web.pages.products.cat-products', compact('category', 'products', 'route'));
     }
 
