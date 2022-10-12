@@ -16,11 +16,11 @@ class CouponController extends Controller
         // dd($Coupon);
         if(! $Coupon)
             return back()->withError('coupon is expired');
-        $total_price=Cart::instance('shopping')->subtotal();   
+        $total_price=str_replace(',' , '' , Cart::instance('shopping')->subtotal());   
         session()->put('coupon',[
             'id'=>$Coupon->id,
             'code'=>$Coupon->code,
-            'total_price'=>$Coupon->discount($total_price),
+            'value'=>$Coupon->discount($total_price),
         ]);
         // dd( session()->get('coupon'));
         return back()->withSuccess('coupon is used successfully');

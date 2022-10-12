@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class WishlistController extends Controller
 {
-    public function index()
+    public function wishlist()
     {
         return view('web.pages.wishlist.index');
     }
@@ -68,6 +68,5 @@ class WishlistController extends Controller
             $response['header']=$header ;
         }
         return $response ;
-
     }
 }

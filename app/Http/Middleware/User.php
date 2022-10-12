@@ -16,15 +16,12 @@ class User
      */
     public function handle(Request $request, Closure $next)
     {
-        if(empty(session('user')) )
+        if( empty(session('user'))  )
         {
-            return 'empty' ;
-            // return redirect()->route('user.login') ;      
+            // return 'empty' ;
+            return redirect()->route('user.login') ;      
         }
-        else{
-            return 'm,lkmlempty' ;
-
-            // return $next($request);
-        }
+            // return 'not empty' ;
+            return $next($request);
     }
 }

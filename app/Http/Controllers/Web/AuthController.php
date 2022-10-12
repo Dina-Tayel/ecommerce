@@ -22,19 +22,17 @@ class AuthController extends Controller
             Session::put('user', $request->email);
             // dd(Session::get('url.intented'));
             if (Session::get('url.intented')) {
- 
                 return Redirect::to(Session::get('url.intended'));
-
-            } else {
+            } 
                 return redirect('/');
-            }
-        } else {
-            return back()->withError('credentials are nort correct !');
-        }
+        }  
+        return back()->withError('credentials are nort correct !');
+        
     }
 
     public function registerSubmit(RegisterRequest $request)
     {
+        // use laravel ui 
         // $request->validate([
         //     'fullname'=>'required|string|max:225',
         //     'email'=>'required|email|unique:users,email',

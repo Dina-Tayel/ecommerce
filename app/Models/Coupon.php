@@ -13,11 +13,15 @@ class Coupon extends Model
 
     public function discount($total_price)
     {
-        if($this->type = 'fixed')
+        if($this->type == 'fixed')
         {
             return $this->value ;
-        }elseif($this->type = 'percent'){
-            return ($total_price/100) * $total_price ;
+            dd('lkasdk');
+
+        }elseif($this->type == 'percent'){
+            // dd( ($this->value/100) * $total_price ) ;
+            return ($this->value/100) * $total_price ;
+
         }else{
             return 0 ;
         }

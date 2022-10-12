@@ -119,16 +119,21 @@
                         <div class="wishlist-area">
                             <a href="{{ route('wishlist')}}" class="wishlist-btn">
                                 <i class="icofont-heart"></i>
+                                @if (Cart::instance('wishlist')->count() > 0)
+
                                 <span class="cart_quantity"
                                     id="wishlist_counter">{{ Cart::instance('wishlist')->count() }}</span>
+                                    @endif
                             </a>
                         </div>
 
                         <!-- Cart -->
                         <div class="cart-area">
                             <div class="cart--btn"><i class="icofont-cart"></i>
+                                @if (Cart::instance('shopping')->count() > 0)
                                 <span class="cart_quantity"
                                     id="cart_counter">{{ Cart::instance('shopping')->count() }}</span>
+                                    @endif
                             </div>
 
                             <!-- Cart Dropdown Content -->
@@ -184,7 +189,7 @@
 
                                                 @if (session()->has('coupon'))
                                                     <span> Total:</span>
-                                                    <span>${{ str_replace(',', '', Cart::subtotal()) - session()->get('coupon')['total'] }}</span>
+                                                    <span>${{ number_format(str_replace(',', '', Cart::subtotal()) - session()->get('coupon')['value'] , 2 )}}</span>
                                                     {{-- <span> $
 
                                                         {{ filter_var(Cart::subtotal(), FILTER_SANITIZE_NUMBER_INT) - session('coupon')['total_price'] }}
@@ -200,7 +205,7 @@
                                     </div>
                                     <div class="cart-box d-flex">
                                         <a href="{{ route('cart') }}" class="btn btn-success btn-sm mr-1 ">Cart</a>
-                                        <a href="checkout-1.html" class="btn btn-primary btn-sm ml-1">Checkout</a>
+                                        <a href="{{ route('checkout')}}" class="btn btn-primary btn-sm ml-1">Checkout</a>
                                     </div>
                             
                             </div>

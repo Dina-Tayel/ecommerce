@@ -60,14 +60,20 @@ class User extends Authenticatable
 
     protected $append=['image_path'] ;
 
-
     public function getImagePathAttribute()
     {
         return asset('uploads/users/'.$this->img);
     }
+
+    //relationships
     public function products()
     {
         return $this->hasMany(Product::class , 'seller_id' , 'id' );
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 
 

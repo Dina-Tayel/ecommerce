@@ -76,7 +76,8 @@
                     <a href="{{ route('products.create') }}" class="nav-link" data-key="t-chat"> Create product </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('product-images.create')}}" class="nav-link" data-key="t-chat"> Create image products </a>
+                    <a href="{{ route('product-images.create') }}" class="nav-link" data-key="t-chat"> Create image
+                        products </a>
                 </li>
 
             </ul>
@@ -92,35 +93,58 @@
         <div class="collapse menu-dropdown" id="usersLayouts">
             <ul class="nav nav-sm flex-column">
                 <li class="nav-item">
-                    <a href="{{ route('users.index') }}" target="_blank" class="nav-link" data-key="t-horizontal">All
+                    <a href="{{ route('users.index') }}" target="_blank" class="nav-link"
+                        data-key="t-horizontal">All
                         users</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('users.create') }}" target="_blank" class="nav-link" data-key="t-detached">Add
+                    <a href="{{ route('users.create') }}" target="_blank" class="nav-link"
+                        data-key="t-detached">Add
                         user</a>
                 </li>
             </ul>
         </div>
     </li> <!-- end users Menu -->
 
-        {{-- Coupons --}}
-        <li class="nav-item">
-            <a class="nav-link menu-link" href="#sidebarCoupons" data-bs-toggle="collapse" role="button"
-                aria-expanded="false" aria-controls="sidebarCoupons">
-                <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Coupons</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarCoupons">
-                <ul class="nav nav-sm flex-column">
-    
-                    <li class="nav-item">
-                        <a href="{{ route('coupon.index') }}" class="nav-link" data-key="t-ecommerce"> All Coupons </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('coupon.create') }}" class="nav-link" data-key="t-ecommerce"> create Coupon </a>
-                    </li>
-                </ul>
-            </div>
-        </li> <!-- end Coupons Menu -->
-    
+    {{-- Coupons --}}
+    <li class="nav-item">
+        <a class="nav-link menu-link" href="#sidebarCoupons" data-bs-toggle="collapse" role="button"
+            aria-expanded="false" aria-controls="sidebarCoupons">
+            <i class="ri-coupon-line"></i> <span data-key="t-dashboards">Coupons</span>
+        </a>
+        <div class="collapse menu-dropdown" id="sidebarCoupons">
+            <ul class="nav nav-sm flex-column">
+
+                <li class="nav-item">
+                    <a href="{{ route('coupon.index') }}" class="nav-link" data-key="t-ecommerce"> All Coupons </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('coupon.create') }}" class="nav-link" data-key="t-ecommerce"> create Coupon
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li> <!-- end Coupons Menu -->
+
+    {{-- shipping --}}
+    <li class="nav-item">
+        <a class="nav-link menu-link" href="#sidebarShipping" data-bs-toggle="collapse" role="button"
+            aria-expanded="false" aria-controls="sidebarShipping">
+            <i class="ri-riding-line"></i> <span data-key="t-dashboards">Shipping</span>
+        </a>
+        <div class="collapse menu-dropdown" id="sidebarShipping">
+            <ul class="nav nav-sm flex-column">
+
+                <li class="nav-item">
+                    <a href="{{ route('shipping.index') }}" class="nav-link" data-key="t-ecommerce"> All shippings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('shipping.create') }}" class="nav-link" data-key="t-ecommerce"> create
+                        shipping </a>
+                </li>
+            </ul>
+        </div>
+    </li> <!-- end shipping Menu -->
 
 </ul>

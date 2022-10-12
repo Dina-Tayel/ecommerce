@@ -83,7 +83,6 @@ class CartController extends Controller
 
     public function update(Request $request)
     {
-
         $rowId = $request->row_id;
         $product_stock = $request->stock;
         $product_qty = $request->product_qty;
@@ -96,10 +95,8 @@ class CartController extends Controller
         } else {
             Cart::instance('shopping')->update($rowId, $product_qty);
             $response['status'] = true;
-
             $response['total'] = Cart::subtotal();
             $response['cart_count'] = Cart::instance('shopping')->count();
-
             $message = 'item is addedd successfully';
         }
 

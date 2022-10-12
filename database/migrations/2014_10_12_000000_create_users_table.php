@@ -29,13 +29,11 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->integer('postcode')->nullable();
-
             $table->text('saddress')->nullable();
             $table->string('scountry')->nullable();
             $table->string('scity')->nullable();
             $table->string('sstate')->nullable();
             $table->integer('spostcode')->nullable();
-            
             $table->rememberToken();
             $table->timestamps();
         });

@@ -8,16 +8,18 @@ use App\Http\Controllers\Backend\BannerController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\CartController;
+use App\Http\Controllers\Web\CheckoutController;
 use App\Http\Controllers\Web\CouponController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\UserController;
 use App\Http\Controllers\WishlistController;
 
 Route::get('/', [HomeController::class, 'home']);
-
-Route::get('user/auth',[AuthController::class,'login'])->name('user.login');
-Route::post('user/login',[AuthController::class,'loginSubmit'])->name('user.submit');
-Route::post('user/register',[AuthController::class,'registerSubmit'])->name('register.submit');
+Route::group(['middleware'=>'guest'] , function(){
+    Route::get('user/auth',[AuthController::class,'login'])->name('user.login');
+    Route::post('user/login',[AuthController::class,'loginSubmit'])->name('user.submit');
+    Route::post('user/register',[AuthController::class,'registerSubmit'])->name('register.submit');
+});
 
 
 Route::get('seller', [AdminController::class, 'index'])->name('seller')->middleware(['auth','vendor']);
@@ -52,14 +54,24 @@ Route::group(['prefix'=>'user'] , function(){
     Route::post('coupon/add',[CouponController::class,'couponAdd'])->name('coupon.add') ;
     
     //wishlist
-    Route::get('/wishlist',[WishlistController::class,'index'])->name('wishlist');
+    Route::get('/wishlist',[WishlistController::class,'wishlist'])->name('wishlist');
     Route::post('/wishlist/store',[WishlistController::class,'wishlistStore'])->name('wishlist.store');
     Route::post('/wishlist/move-to-cart',[WishlistController::class,'MoveToCart'])->name('wishlist.move.cart');
     Route::post('/wishlist/delete',[WishlistController::class,'wishlistDelete'])->name('wishlist.delete');
 
+    //checkout
+    // Route::get('/checkout',[CheckoutController::class, 'checkout'])->name('checkout')->middleware('user');
+    Route::get('/checkout',[CheckoutController::class, 'checkout'])->name('checkout')->middleware('user');
+
+    Route::post('/checkout-first',[CheckoutController::class , 'checkout1Store'])->name('checkout1.store');
+    Route::post('/checkout-two',[CheckoutController::class , 'checkout2Store'])->name('checkout2.store');
+    Route::post('/checkout-three',[CheckoutController::class , 'checkout3Store'])->name('checkout3.store');
+    Route::get('/checkout/confirm',[CheckoutController::class, 'confirm'])->name('checkout.confirm');
+    Route::get('/checkout/complete/{order_number}',[CheckoutController::class, 'complete'])->name('checkout.complete');
 
 
 });
+
 // Route::get('/hi', function () {
 //     Toastr::success('Messages in here', 'Title', ["positionClass" => "toast-top-center"]);
 //     return view('welcome');

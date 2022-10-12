@@ -6,12 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function home()
     {
+        // Cart::instance('shopping')->destroy();
+        // dd(Cart::instance('shopping')->content());
+        // dd(Cart::instance('shopping')->count());
         $banners = Banner::activeandcondition()->get();
         $categories = Category::activeandparent()->orderBy('id', 'DESC')->limit(3)->get();
         $new_products = Product::with('brand')->active()->where('condition', 'new')->latest()->limit(10)->get();
@@ -45,7 +49,6 @@ class HomeController extends Controller
         //     ->where(['category_id' => $category->id])->get();
 
         // return view('web.pages.products.cat-products', compact('category', 'products', 'route'));
-
         $route = 'products-cat' ;
         $sort = $request->get('sort') ?? null ;
         $item = explode('_', $sort) ;
