@@ -80,7 +80,6 @@
 
                             <div class="col-12">
                                 <div class="checkout_pagination mt-3 d-flex justify-content-end clearfix">
-                                    <a href="{{ route('checkout') }}" class="btn btn-primary mt-2 ml-2">Go Back</a>
                                     <button type="submit" class="btn btn-primary mt-2 ml-2">Continue</a>
                                 </div>
                             </div>

@@ -22,7 +22,6 @@ class CheckoutController extends Controller
     public function checkout1Store(Checkout1Request $request)
     {
 
-        // return $request->all();
         session()->put('checkout1', [
             'fname' => $request->first_name,
             'lname' => $request->last_name,
@@ -51,55 +50,70 @@ class CheckoutController extends Controller
 
     public function checkout2Store(Request $request)
     {
-        $request->validate([
-            'shipping_charge' => 'required|numeric',
-        ]);
+        if (session()->has('previous_page')) {
+            // $checkout1 = Session::get('checkout1'); // Get the array
+            // unset($checkout1[1]);
+            // unset($checkout1[0]);
 
-        session()->push('checkout1', [
-            'delivery_charge' => $request->shipping_charge,
+        }
+        // $request->validate([
+        //     'shipping_charge' => 'required|numeric',
+        // ]);
+       session()->put('sharge',[
+        'delivery_charge' => $request->shipping_charge,
             'payment_status' => 'paid',
-        ]);
+      ]);
+        // session()->push('checkout1', [
+        //     'delivery_charge' => $request->shipping_charge,
+        //     'payment_status' => 'paid',
+        // ]);
         return view('web.pages.checkout.checkout3');
     }
 
     public function checkout3Store(Request $request)
     {
+        
+        // if (session()->has('previous_page')) {
+            // $checkout1 = Session::get('checkout1'); // Get the array
+            // unset($checkout1[1]);
+            // unset($checkout1[0]);
+
+        // }
+
         // $request->validate([
         //     'payment_method'=>'required|numeric',
         // 'paymetn_status'=>'string|un:paid,inpaid'
         // ]);
-        session()->push('checkout1', ['payment_method' => $request->payment_method]);
-        // return session()->get('checkout1');        
+       
+        session()->push('sharge', ['payment_method' => $request->payment_method]);      
         return view('web.pages.checkout.checkout4');
     }
 
     public function confirm(Request $request)
     {
-        // return session()->get('checkout1')['fname'];
+        session()->put('previous_page', 'checkout3Store');
         $coupon = session()->has('coupon') ? session()->get('checkout1') : 0;
         if (session()->has('coupon')  && empty(session()->has('checkout1'))) {
             $total_amount = number_format(str_replace(',', '', Cart::subtotal()) - session()->get('coupon')['value'], 2);
         } elseif (session()->has('checkout1') && empty(session()->has('coupon'))) {
 
-            $total_amount =  number_format(str_replace(',', '', Cart::subtotal()) + session()->get('checkout1')[0]['delivery_charge'], 2);
+            $total_amount =  number_format(str_replace(',', '', Cart::subtotal()) + session()->get('sharge')['delivery_charge'], 2);
         } elseif (session()->has('coupon') && session()->has('checkout1')) {
 
-            $total_amount =  number_format(str_replace(',', '', Cart::subtotal()) + session()->get('checkout1')[0]['delivery_charge'] -  session()->get('coupon')['value'], 2);
+            $total_amount =  number_format(str_replace(',', '', Cart::subtotal()) + session()->get('sharge')['delivery_charge'] -  session()->get('coupon')['value'], 2);
         } else {
 
             $total_amount =  number_format(str_replace(',', '', Cart::subtotal()), 2);
         }
-
-        // return session::get('checkout1');
         $order = Order::create([
             'user_id' => Auth::user()->id,
             'order_number' => Str::upper('ORD-' . Str::random(10)),
             "subtotal" => str_replace(',', '', Cart::subtotal()),
             'total_amount' => $total_amount,
             'coupon' => $coupon,
-            'delivary_charge' => session()->get('checkout1')[0]['delivery_charge'],
-            'payment_status' => session()->get('checkout1')[0]['payment_status'],
-            'payment_method' => session()->get('checkout1')[1]["payment_method"],
+            'delivary_charge' => session()->get('sharge')['delivery_charge'], 
+            'payment_status' => session()->get('sharge')['payment_status'],
+            'payment_method' => session()->get('sharge')[0]["payment_method"],
             'condition' => 'pending',
             "first_name" => session()->get('checkout1')['fname'],
             "last_name" => session()->get('checkout1')['lname'],

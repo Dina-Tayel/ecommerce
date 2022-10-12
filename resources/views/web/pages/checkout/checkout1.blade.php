@@ -1,4 +1,4 @@
-@extends('web.layouts.master')
+{{-- @extends('web.layouts.master') --}}
 @section('content')
     <!-- Breadcumb Area -->
     <div class="breadcumb_area">
@@ -211,7 +211,6 @@
                             </div>
                             <div class="col-12">
                                 <div class="checkout_pagination d-flex justify-content-end mt-50">
-                                    <a href="checkout-1.html" class="btn btn-primary mt-2 ml-2">Go Back</a>
                                     <button type="submit" id="checkout1-btn"
                                         class="btn btn-primary mt-2 ml-2">Continue</a>
                                 </div>

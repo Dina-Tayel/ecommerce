@@ -26,7 +26,6 @@ class Checkout1Request extends FormRequest
         return [
             'first_name'=>'required|string|max:225',
             'last_name'=>'required|string|max:225',
-            'email'=>'required|email|unique:users,email,' . $this->user,
             'phone'=>'required|numeric',
             'country'=>'required|string|max:225',
             'state'=>'required|string|max:225',

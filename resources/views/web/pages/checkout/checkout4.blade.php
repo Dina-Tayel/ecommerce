@@ -89,7 +89,7 @@
                                     </tr>
                                     <tr>
                                         <td>Shipping</td>
-                                        <td>${{ session()->get('checkout1')[0]['delivery_charge'] }}</td>
+                                        <td>${{ session()->get('sharge')['delivery_charge'] }}</td>
                                     </tr>
                                     <tr>
                                         <td>coupon</td>
@@ -104,10 +104,10 @@
                                             <td>${{ number_format(str_replace(',', '', Cart::subtotal()) - session()->get('coupon')['value'], 2) }}
                                             </td>
                                         @elseif (session()->has('checkout1') && empty(session()->has('coupon')))
-                                            <td>${{ number_format(str_replace(',', '', Cart::subtotal()) + session()->get('checkout1')[0]['delivery_charge'], 2) }}
+                                            <td>${{ number_format(str_replace(',', '', Cart::subtotal()) + session()->get('sharge')['delivery_charge'], 2) }}
                                             </td>
                                         @elseif (session()->has('coupon') && session()->has('checkout1'))
-                                            <td>${{ number_format(str_replace(',', '', Cart::subtotal()) + session()->get('checkout1')[0]['delivery_charge'] - session()->get('coupon')['value'], 2) }}
+                                            <td>${{ number_format(str_replace(',', '', Cart::subtotal()) + session()->get('sharge')['delivery_charge'] - session()->get('coupon')['value'], 2) }}
                                             </td>
                                         @else
                                             <td>${{ number_format(str_replace(',', '', Cart::subtotal()), 2) }}</td>
@@ -118,7 +118,6 @@
                             </table>
                         </div>
                         <div class="checkout_pagination d-flex justify-content-end mt-3">
-                            <a href="checkout-4.html" class="btn btn-primary mt-2 ml-2 d-none d-sm-inline-block">Go Back</a>
                             <a href="{{ route('checkout.confirm') }}" class="btn btn-primary mt-2 ml-2">Confirm</a>
                         </div>
                     </div>

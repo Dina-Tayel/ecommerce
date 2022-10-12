@@ -93,8 +93,10 @@
         @include('web.layouts.header')
     </header>
     <!-- Header Area End -->
+<div id="div-content">
 
     @yield('content')
+</div>
 
     <!-- Footer Area -->
 
