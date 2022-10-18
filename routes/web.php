@@ -73,6 +73,11 @@ Route::group(['prefix'=>'user'] , function(){
     //shop
     Route::get('/shop',[ShopController::class, 'shop'])->name('shop');
     Route::post('/shop-filter',[ShopController::class, 'shopFilter'])->name('shop.fiter');
+
+    //search product and auto search product
+    Route::get('/autoseacrh',[HomeController::class, 'autosearch'])->name('autosearch');
+    Route::get('/search',[HomeController::class, 'search'])->name('search');
+
 });
 
 // Route::get('/hi', function () {

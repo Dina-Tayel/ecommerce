@@ -27,6 +27,10 @@
 
     <!-- Style CSS -->
     <link rel="stylesheet" href="{{ asset('web/assets/css/style.css') }}">
+    <!-- auto search CSS -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+
     @yield('styles')
 </head>
 
@@ -93,10 +97,10 @@
         @include('web.layouts.header')
     </header>
     <!-- Header Area End -->
-<div id="div-content">
+    <div id="div-content">
 
-    @yield('content')
-</div>
+        @yield('content')
+    </div>
 
     <!-- Footer Area -->
 
@@ -123,6 +127,32 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="{{ asset('web/assets/js/wow.min.js') }}"></script>
     <script src="{{ asset('web/assets/js/active.js') }}"></script>
+    {{-- autosearch --}}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+    <!-- auto-search-->
+    <script>
+        $(document).ready(function() {
+            var route = "{{ route('autosearch') }}";
+            $('#search_text').autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: route,
+                        dataType: 'JSON',
+                        data: {
+                            term: request.term,
+                        },
+                        success: function(data) {
+                            response(data)
+                        }
+                    });
+                },
+                minLength: 1,
+            });
+        });
+    </script>
     <script>
         // <!---------------- delete from cart-------------->
         $(document).on('click', '.cart-delete', function(e) {
@@ -163,7 +193,7 @@
 
         });
     </script>
-   
+
 
     @stack('scripts')
 </body>

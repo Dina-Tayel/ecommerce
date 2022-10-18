@@ -13,12 +13,18 @@ class Brand extends Model
 
     protected $append=['image_path'] ;
 
-
     public function getImagePathAttribute()
     {
         return asset('uploads/brands/'.$this->img);
     }
-
+    
+    //scopes
+    public function scopeActive($query)
+    {
+        return $query->where('status','active');
+    }
+  
+    //relationships
     public function products()
     {
         return $this->hasMany(Product::class);

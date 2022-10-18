@@ -43,7 +43,7 @@
                                                 id="{{ $category->slug }}">
                                             <label class="custom-control-label"
                                                 for="{{ $category->slug }}">{{ $category->title }} <span
-                                                    class="text-muted"></span></label>
+                                                    class="text-muted">{{ $category->products->count() }}</span></label>
                                         </div>
                                     @endforeach
                                 </div>
@@ -56,15 +56,16 @@
                                 <div class="widget-desc">
                                     <div class="slider-range">
                                         @if (request()->query('price'))
-                                          @php
-                                            $price =  explode('-',request()->query('price'))
-                                          @endphp  
+                                            @php
+                                                $price = explode('-', request()->query('price'));
+                                            @endphp
                                         @endif
                                         <div id="slider_range" data-min="{{ Helper::minPrice() }}"
                                             data-max="{{ Helper::maxPrice() }}" data-unit="$"
                                             class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                                            data-value-min="{{(! empty($price[0]))  ? $price[0]  :  Helper::minPrice() }}"
-                                            data-value-max="{{(! empty($price[1]) ) ? $price[1]  :  Helper::maxPrice() }}" data-label-result="Price:">
+                                            data-value-min="{{ !empty($price[0]) ? $price[0] : Helper::minPrice() }}"
+                                            data-value-max="{{ !empty($price[1]) ? $price[1] : Helper::maxPrice() }}"
+                                            data-label-result="Price:">
                                             <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
                                             <span class="ui-slider-handle ui-state-default ui-corner-all"
                                                 tabindex="0"></span>
@@ -76,10 +77,12 @@
                                                 @if (!empty(request()->query('price'))) {{ request()->query('price') }} @endif>
                                             {{-- <div class="range-price">Price: {{ Helper::minPrice() }} -
                                                 {{ Helper::maxPrice() }}</div> --}}
-                                                {{-- <input type="text" id="amount" style="border: 0; width: 50%;" value="{{request()->query('price')  ? request()->query('price') : Helper::minPrice()-Helper::maxPrice() }} " readonly> --}}
-                                                <input type="text" id="amount" style="border: 0; width: 50%;" value="{{! empty($price[0])  ? $price[0]  :  Helper::minPrice()  }}-{{! empty($price[1])  ? $price[1]  :  Helper::maxPrice()}} " readonly>
-                                            
-                                                <button type="submit" class="btn btn-sm btn-primary float-right"
+                                            {{-- <input type="text" id="amount" style="border: 0; width: 50%;" value="{{request()->query('price')  ? request()->query('price') : Helper::minPrice()-Helper::maxPrice() }} " readonly> --}}
+                                            <input type="text" id="amount" style="border: 0; width: 50%;"
+                                                value="{{ !empty($price[0]) ? $price[0] : Helper::minPrice() }}-{{ !empty($price[1]) ? $price[1] : Helper::maxPrice() }} "
+                                                readonly>
+
+                                            <button type="submit" class="btn btn-sm btn-primary float-right"
                                                 style="margin: 12px 0px 10px 0px ; height: 30px; line-height: 22px">filter</button>
                                         </div>
                                     </div>
@@ -127,36 +130,22 @@
                             <div class="widget brands mb-30">
                                 <h6 class="widget-title">Filter by brands</h6>
                                 <div class="widget-desc">
-                                    <!-- Single Checkbox -->
-                                    <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                        <label class="custom-control-label" for="customCheck11">Zara <span
-                                                class="text-muted">(213)</span></label>
-                                    </div>
-                                    <!-- Single Checkbox -->
-                                    <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                        <label class="custom-control-label" for="customCheck12">Gucci <span
-                                                class="text-muted">(65)</span></label>
-                                    </div>
-                                    <!-- Single Checkbox -->
-                                    <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck13">
-                                        <label class="custom-control-label" for="customCheck13">Addidas <span
-                                                class="text-muted">(70)</span></label>
-                                    </div>
-                                    <!-- Single Checkbox -->
-                                    <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck14">
-                                        <label class="custom-control-label" for="customCheck14">Nike <span
-                                                class="text-muted">(104)</span></label>
-                                    </div>
-                                    <!-- Single Checkbox -->
-                                    <div class="custom-control custom-checkbox d-flex align-items-center">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck15">
-                                        <label class="custom-control-label" for="customCheck15">Denim <span
-                                                class="text-muted">(71)</span></label>
-                                    </div>
+                                    @if (request()->query('brand'))
+                                        @php
+                                            $filter_brands = explode(',', request()->query('brand'));
+                                        @endphp
+                                    @endif
+                                    @foreach ($brands as $brand)
+                                        <!-- Single Checkbox -->
+                                        <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
+                                            <input type="checkbox" name="brand[]" value="{{ $brand->slug }}"
+                                                onchange="this.form.submit();" class="custom-control-input"
+                                                id="{{ $brand->id }}" @if (!empty($filter_brands) && in_array($brand->slug, $filter_brands)) checked @endif>
+                                            <label class="custom-control-label"
+                                                for="{{ $brand->id }}">{{ $brand->title }} <span
+                                                    class="text-muted">({{ $brand->products->count() }})</span></label>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
 
@@ -254,65 +243,75 @@
 
                             </select>
                         </div>
-
                         <div class="shop_grid_product_area">
                             <div class="row justify-content-center">
-                                @foreach ($products as $product)
-                                    <!-- Single Product -->
-                                    <div class="col-9 col-sm-12 col-md-6 col-lg-4">
-                                        <div class="single-product-area mb-30">
-                                            <div class="product_image">
-                                                <!-- Product Image -->
-                                                <img class="normal_img" src="{{ $product->image_path }}" alt="">
-                                                {{-- <img class="hover_img" src="img/product-img/new-8-back.png" alt=""> --}}
+                                @if ($products->count() > 0)
+                                    @foreach ($products as $product)
+                                        <!-- Single Product -->
+                                        <div class="col-9 col-sm-12 col-md-6 col-lg-4">
+                                            <div class="single-product-area mb-30">
+                                                <div class="product_image">
+                                                    <!-- Product Image -->
+                                                    <img class="normal_img" src="{{ $product->image_path }}"
+                                                        alt="">
+                                                    {{-- <img class="hover_img" src="img/product-img/new-8-back.png" alt=""> --}}
 
-                                                <!-- Product Badge -->
-                                                <div class="product_badge">
-                                                    <span>{{ $product->condition }}</span>
+                                                    <!-- Product Badge -->
+                                                    <div class="product_badge">
+                                                        <span>{{ $product->condition }}</span>
+                                                    </div>
+
+                                                    <!-- Wishlist -->
+                                                    <div class="product_wishlist">
+                                                        <a href="wishlist.html"><i class="icofont-heart"></i></a>
+                                                    </div>
+
+                                                    <!-- Compare -->
+                                                    <div class="product_compare">
+                                                        <a href="compare.html"><i class="icofont-exchange"></i></a>
+                                                    </div>
                                                 </div>
 
-                                                <!-- Wishlist -->
-                                                <div class="product_wishlist">
-                                                    <a href="wishlist.html"><i class="icofont-heart"></i></a>
-                                                </div>
+                                                <!-- Product Description -->
+                                                <div class="product_description">
+                                                    <!-- Add to cart -->
+                                                    <div class="product_add_to_cart">
+                                                        <a href="#"><i class="icofont-shopping-cart"></i> Add to
+                                                            Cart</a>
+                                                    </div>
 
-                                                <!-- Compare -->
-                                                <div class="product_compare">
-                                                    <a href="compare.html"><i class="icofont-exchange"></i></a>
+                                                    <!-- Quick View -->
+                                                    <div class="product_quick_view">
+                                                        <a href="#" data-toggle="modal" data-target="#quickview"><i
+                                                                class="icofont-eye-alt"></i> Quick View</a>
+                                                    </div>
+
+                                                    <p class="brand_name">{{ ucfirst($product->brand->title) }}</p>
+                                                    <a
+                                                        href="{{ route('product.details', $product->slug) }}">{{ ucfirst($product->title) }}</a>
+                                                    <h6 class="product-price">
+                                                        {{ number_format($product->offer_price, 2) }}
+                                                        @if ($product->discount > 0)
+                                                            <span>{{ number_format($product->price, 2) }} </span>
+                                                        @endif
+                                                    </h6>
                                                 </div>
                                             </div>
-
-                                            <!-- Product Description -->
-                                            <div class="product_description">
-                                                <!-- Add to cart -->
-                                                <div class="product_add_to_cart">
-                                                    <a href="#"><i class="icofont-shopping-cart"></i> Add to
-                                                        Cart</a>
-                                                </div>
-
-                                                <!-- Quick View -->
-                                                <div class="product_quick_view">
-                                                    <a href="#" data-toggle="modal" data-target="#quickview"><i
-                                                            class="icofont-eye-alt"></i> Quick View</a>
-                                                </div>
-
-                                                <p class="brand_name">{{ ucfirst($product->brand->title) }}</p>
-                                                <a
-                                                    href="{{ route('product.details', $product->slug) }}">{{ ucfirst($product->title) }}</a>
-                                                <h6 class="product-price">{{ number_format($product->offer_price, 2) }}
-                                                    @if ($product->discount > 0)
-                                                        <span>{{ number_format($product->price, 2) }} </span>
-                                                    @endif
-                                                </h6>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="col-9 col-sm-12 col-md-6 col-lg-4">
+                                        <div class="single-product-area mb-30">
+                                            <div class="">
+                                                <p class="text-center"> No Products Found</p>
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
-
+                                @endif
                             </div>
                         </div>
+                        
                         {{ $products->appends($_GET)->links('vendor.pagination.custom') }}
-
 
                     </div>
                 </div>
@@ -323,8 +322,8 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            const max_price =parseInt($('#slider_range').data('max')) ;
-            const min_price =parseInt($('#slider_range').data('min')) ;
+            const max_price = parseInt($('#slider_range').data('max'));
+            const min_price = parseInt($('#slider_range').data('min'));
             let price_range = max_price + '-' + min_price;
             $("#slider_range").slider({
                 range: true,
@@ -334,7 +333,7 @@
                     $("#slider_range").data("value-min"),
                     $("#slider_range").data("value-max"),
                 ],
-                slide: function(event,ui) {
+                slide: function(event, ui) {
                     $("#amount").val(ui.values[0] + "-" + ui.values[1]);
                     $("#price_range").val(ui.values[0] + "-" + ui.values[1]);
 

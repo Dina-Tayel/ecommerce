@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Banner;
-use App\Models\Category;
 use App\Models\Product;
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class HomeController extends Controller
 {
@@ -68,5 +69,33 @@ class HomeController extends Controller
     {
         $product = Product::where('slug', $slug)->with('images', 'related_projects')->latest()->first();
         return view('web.pages.product-details', compact('product'));
+    }
+
+    public function autosearch(Request $request)
+    {
+        $query =$request->get('term' , '');
+        // dd($query);
+        $products =Product::where('title','like' , '%' . $query . '%')->get();
+        $data =[];
+        foreach($products as $product){
+            $data[]=['value'=>$product->title , 'id'=>$product->id];
+        }
+        if(count($data))
+        {
+            return $data ;
+        }else{
+            return ['value'=>'no products found', 'id'=>''];
+        }
+
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $products = Product::where('title' , 'like' , '%' .$query .'%' )->orderBy('id','DESC')->paginate(20) ;
+        $categories = Category::active()->where('is_parent',1)->get();
+        $brands = Brand::active()->with('products')->get();
+        return view('web.shop.shop',compact('products', 'categories','brands'));
+
     }
 }
