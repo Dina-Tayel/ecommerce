@@ -17,6 +17,11 @@ class Category extends Model
         return  asset('uploads/categories/' . $this->img);
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('status','active');
+    }
+
     protected static function shiftChild($category_childs_id)
     {
         return Category::whereIn('id',$category_childs_id)->update([

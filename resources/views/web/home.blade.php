@@ -31,26 +31,26 @@
     <!-- Welcome Slides Area -->
 
     <!-- Top Catagory Area -->
-    @if ($categories->count() >0)
-    <div class="top_catagory_area mt-50 clearfix">
-        <div class="container">
-            <div class="row">
+    @if ($categories->count() > 0)
+        <div class="top_catagory_area mt-50 clearfix">
+            <div class="container">
+                <div class="row">
 
-                @foreach ($categories as $category )
-                <!-- Single Catagory -->
-                <div class="col-12 col-md-4">
-                    <div class="single_catagory_area mt-50">
-                        <a href="{{ route('category.products' , $category->slug) }} ">
-                        {{-- <a href="{{route('category.products')}}?product={{ $category->slug }} " > --}}
-                            <img src="{{ $category->image_path }}" alt="">
-                        </a>
-                    </div>
+                    @foreach ($categories as $category)
+                        <!-- Single Catagory -->
+                        <div class="col-12 col-md-4">
+                            <div class="single_catagory_area mt-50">
+                                <a href="{{ route('category.products', $category->slug) }} ">
+                                    {{-- <a href="{{route('category.products')}}?product={{ $category->slug }} " > --}}
+                                    <img src="{{ $category->image_path }}" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+
                 </div>
-                @endforeach
-            
             </div>
         </div>
-    </div>  
     @endif
 
     <!-- Top Catagory Area -->
@@ -148,55 +148,60 @@
                 <div class="col-12">
                     <div class="new_arrivals_slides owl-carousel">
                         @if ($new_products->count() > 0)
-                            @foreach ($new_products as $new_product )
-                                  <!-- Single Product -->
-                        <div class="single-product-area">
-                            <div class="product_image">
-                                <!-- Product Image -->
-                                <img class="normal_img" src="{{$new_product->image_path}}"
-                                    alt="">
+                            @foreach ($new_products as $new_product)
+                                <!-- Single Product -->
+                                <div class="single-product-area">
+                                    <div class="product_image">
+                                        <!-- Product Image -->
+                                        <img class="normal_img" src="{{ $new_product->image_path }}" alt="">
 
-                                <!-- Product Badge -->
-                                <div class="product_badge">
-                                    <span>New</span>
+                                        <!-- Product Badge -->
+                                        <div class="product_badge">
+                                            <span>New</span>
+                                        </div>
+
+                                        <!-- Wishlist -->
+                                        <div class="product_wishlist">
+                                            <a href="javascript:void(0)" class="add-to-wishlist"
+                                                id="add-to-wishlist-{{ $new_product->id }}"
+                                                data-id="{{ $new_product->id }}" data-qty="1"><i
+                                                    class="icofont-heart"></i></a>
+                                        </div>
+
+                                        <!-- Compare -->
+                                        <div class="product_compare">
+                                            <a href="compare.html"><i class="icofont-exchange"></i></a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Product Description -->
+                                    <div class="product_description">
+                                        <!-- Add to cart -->
+                                        <div class="product_add_to_cart">
+                                            <a href="#" data-quantity="1" data-product-id="{{ $new_product->id }}"
+                                                class="add_to_cart" id="add_to_cart{{ $new_product->id }}"><i
+                                                    class="icofont-shopping-cart"></i> Add to Cart</a>
+                                        </div>
+
+                                        <!-- Quick View -->
+                                        <div class="product_quick_view">
+                                            <a href="#" data-toggle="modal" data-target="#quickview"><i
+                                                    class="icofont-eye-alt"></i> Quick View</a>
+                                        </div>
+
+                                        <p class="brand_name">{{ $new_product->brand->title }}</p>
+                                        <a
+                                            href="{{ route('product.details', $new_product->slug) }}">{{ $new_product->title }}</a>
+                                        <h6 class="product-price">{{ number_format($new_product->offer_price, 2) }}
+                                            @if ($new_product->discount > 0)
+                                                <span>{{ number_format($new_product->price, 2) }} </span>
+                                            @endif
+                                        </h6>
+                                    </div>
                                 </div>
-
-                                <!-- Wishlist -->
-                                <div class="product_wishlist">
-                                    <a href="wishlist.html"><i class="icofont-heart"></i></a>
-                                </div>
-
-                                <!-- Compare -->
-                                <div class="product_compare">
-                                    <a href="compare.html"><i class="icofont-exchange"></i></a>
-                                </div>
-                            </div>
-
-                            <!-- Product Description -->
-                            <div class="product_description">
-                                <!-- Add to cart -->
-                                <div class="product_add_to_cart">
-                                    <a href="#"><i class="icofont-shopping-cart"></i> Add to Cart</a>
-                                </div>
-
-                                <!-- Quick View -->
-                                <div class="product_quick_view">
-                                    <a href="#" data-toggle="modal" data-target="#quickview"><i
-                                            class="icofont-eye-alt"></i> Quick View</a>
-                                </div>
-
-                                <p class="brand_name">{{ $new_product->brand->title }}</p>
-                                <a href="{{ route('product.details',$new_product->slug) }}">{{ $new_product->title }}</a>
-                                <h6 class="product-price">{{ number_format($new_product->offer_price, 2) }}
-                                    @if ($new_product->discount > 0)
-                                        <span>{{ number_format($new_product->price, 2) }} </span>
-                                    @endif
-                                </h6>
-                            </div>
-                        </div>
-                            @endforeach                            
+                            @endforeach
                         @endif
-                      
+
                     </div>
                 </div>
             </div>
@@ -1160,8 +1165,8 @@
                                                         class="ts-seller-info mt-3 d-flex align-items-center justify-content-between">
                                                         <!-- Add to cart -->
                                                         <div class="ts_product_add_to_cart">
-                                                            <a href="#" data-toggle="tooltip"
-                                                                data-placement="top" title="Add To Cart"><i
+                                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                                                title="Add To Cart"><i
                                                                     class="icofont-shopping-cart"></i></a>
                                                         </div>
 
@@ -1211,8 +1216,8 @@
                                                         class="ts-seller-info mt-3 d-flex align-items-center justify-content-between">
                                                         <!-- Add to cart -->
                                                         <div class="ts_product_add_to_cart">
-                                                            <a href="#" data-toggle="tooltip"
-                                                                data-placement="top" title="Add To Cart"><i
+                                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                                                title="Add To Cart"><i
                                                                     class="icofont-shopping-cart"></i></a>
                                                         </div>
 
@@ -1262,8 +1267,8 @@
                                                         class="ts-seller-info mt-3 d-flex align-items-center justify-content-between">
                                                         <!-- Add to cart -->
                                                         <div class="ts_product_add_to_cart">
-                                                            <a href="#" data-toggle="tooltip"
-                                                                data-placement="top" title="Add To Cart"><i
+                                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                                                title="Add To Cart"><i
                                                                     class="icofont-shopping-cart"></i></a>
                                                         </div>
 
@@ -1431,7 +1436,7 @@
         </div>
     </section>
     <!-- Offer Area End -->
-{{-- 
+    {{-- 
     <!-- Popular Brands Area -->
     <section class="popular_brands_area section_padding_100">
         <div class="container">
@@ -1532,3 +1537,100 @@
     </section>
     <!-- Special Featured Area --> --}}
 @endsection
+@push('scripts')
+    <!---------------- Add To cart-------------->
+    <script>
+        $(document).on('click', '.add_to_cart', function(e) {
+            e.preventDefault();
+            var product_id = $(this).data('product-id');
+            var quantity = $(this).data('quantity');
+            var route = "{{ route('cart.store') }}";
+            var token = "{{ csrf_token() }}";
+            $.ajax({
+                url: route,
+                type: 'POST',
+                dataType: "JSON",
+                data: {
+                    _token: token,
+                    product_id: product_id,
+                    quantity: quantity,
+                },
+                beforeSend: function() {
+                    $('#add_to_cart' + product_id).html(
+                        '<li class="fa fa-spinner fa-spin"></li>loading...')
+                },
+                complete: function() {
+                    $('#add_to_cart' + product_id).html(
+                        '<i class="icofont-shopping-cart"></i>Add to Cart')
+
+                },
+                success: function(response) {
+                    $('body #header_ajax').html(response['header']);
+                    if (response['status']) {
+                        swal({
+                            title: "Good job!",
+                            text: response['message'],
+                            icon: "success",
+                            button: "Ok",
+                        });
+
+                    }
+                }
+            })
+        })
+    </script>
+
+    <!---------------- add to wishlist-------------->
+    <script>
+        $(document).on('click', '.add-to-wishlist', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var product_qty = $(this).data('qty');
+            var token = "{{ csrf_token() }}";
+            var route = "{{ route('wishlist.store') }}";
+            $.ajax({
+                url: route,
+                type: 'POST',
+                data: {
+                    _token: token,
+                    product_id: id,
+                    product_qty: product_qty,
+                },
+                beforeSend: function() {
+                    $('#add-to-wishlist-' + id).html(
+                        '<li class="fa fa-spinner" aria-hidden="true"></li>');
+                },
+                complete: function() {
+                    $('#add-to-wishlist-' + id).html('<i class="icofont-heart"> </i>');
+
+                },
+                success: function(response) {
+                    if (response['present']) {
+                        swal({
+                            title: "oops!",
+                            text: response['message'],
+                            icon: "warning",
+                            button: "Ok",
+                        });
+                    } else if (response['status']) {
+                        $('body #header_ajax').html(response['header']);
+                        $('body #wishlist_counter').html(response['wishlist_count']);
+                        swal({
+                            title: "Good job!",
+                            text: response['message'],
+                            icon: "success",
+                            button: "Ok",
+                        });
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: 'something wrong happwnd can not add this item',
+                            icon: "warning",
+                            button: "Ok",
+                        });
+                    }
+                }
+            })
+        })
+    </script>
+@endpush

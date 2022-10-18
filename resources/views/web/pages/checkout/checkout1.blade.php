@@ -1,4 +1,4 @@
-{{-- @extends('web.layouts.master') --}}
+@extends('web.layouts.master')
 @section('content')
     <!-- Breadcumb Area -->
     <div class="breadcumb_area">

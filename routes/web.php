@@ -11,6 +11,7 @@ use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CheckoutController;
 use App\Http\Controllers\Web\CouponController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\ShopController;
 use App\Http\Controllers\Web\UserController;
 use App\Http\Controllers\WishlistController;
 
@@ -61,15 +62,17 @@ Route::group(['prefix'=>'user'] , function(){
 
     //checkout
     // Route::get('/checkout',[CheckoutController::class, 'checkout'])->name('checkout')->middleware('user');
-    Route::get('/checkout',[CheckoutController::class, 'checkout'])->name('checkout')->middleware('user');
+    Route::get('/checkout',[CheckoutController::class, 'checkout'])->name('checkout')->middleware('auth');
 
-    Route::post('/checkout-first',[CheckoutController::class , 'checkout1Store'])->name('checkout1.store');
-    Route::post('/checkout-two',[CheckoutController::class , 'checkout2Store'])->name('checkout2.store');
-    Route::post('/checkout-three',[CheckoutController::class , 'checkout3Store'])->name('checkout3.store');
-    Route::get('/checkout/confirm',[CheckoutController::class, 'confirm'])->name('checkout.confirm');
-    Route::get('/checkout/complete/{order_number}',[CheckoutController::class, 'complete'])->name('checkout.complete');
+    Route::post('/checkout-first',[CheckoutController::class , 'checkout1Store'])->name('checkout1.store')->middleware('auth');
+    Route::post('/checkout-two',[CheckoutController::class , 'checkout2Store'])->name('checkout2.store')->middleware('auth');
+    Route::post('/checkout-three',[CheckoutController::class , 'checkout3Store'])->name('checkout3.store')->middleware('auth');
+    Route::get('/checkout/confirm',[CheckoutController::class, 'confirm'])->name('checkout.confirm')->middleware('auth');
+    Route::get('/checkout/complete/{order_number}',[CheckoutController::class, 'complete'])->name('checkout.complete')->middleware('auth');
 
-
+    //shop
+    Route::get('/shop',[ShopController::class, 'shop'])->name('shop');
+    Route::post('/shop-filter',[ShopController::class, 'shopFilter'])->name('shop.fiter');
 });
 
 // Route::get('/hi', function () {

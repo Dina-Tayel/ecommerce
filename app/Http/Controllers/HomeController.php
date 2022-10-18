@@ -34,5 +34,6 @@ class HomeController extends Controller
         } elseif (auth()->user()->role == 'admin') {
             return redirect(auth()->user()->role);  // route---> admin
         }
+        
     }
 }

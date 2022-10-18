@@ -8,11 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 
 class AuthController extends Controller
 {
     public function login()
     {
+        Session::put('url.intented',URL::previous());
         return view('web.auth.login');
     }
 
@@ -24,7 +26,7 @@ class AuthController extends Controller
             if (Session::get('url.intented')) {
                 return Redirect::to(Session::get('url.intended'));
             } 
-                return redirect('/');
+             return redirect('/');
         }  
         return back()->withError('credentials are nort correct !');
         

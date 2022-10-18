@@ -37,7 +37,7 @@ class ProductFactory extends Factory
              'condition'=>$this->faker->randomElement(['new','popular','winter']),
              'category_id'=>$this->faker->randomElement(Category::where('is_parent',1)->pluck('id')->toArray()),
              'child_cat_id'=>$this->faker->randomElement(Category::where('is_parent',0)->pluck('parent_id')->toArray()),
-             'vendor_id'=>$this->faker->randomElement(User::where('role','vendor')->pluck('id')->toArray()),
+             'seller_id'=>$this->faker->randomElement(User::where('role','vendor')->pluck('id')->toArray()),
              'brand_id'=>$this->faker->randomElement(Brand::pluck('id')->toArray()),
 
         ];

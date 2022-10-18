@@ -230,15 +230,13 @@
     <script>
         $('#sortBy').change(function() {
             var sort = $(this).val();
-            var url = window.location = "{{ url('' . $route . '') }}/{{ $category->slug }}?sort=" + sort;
-
-
+            var url = window.location = "{{ url('' . $route . '') }}/{{ $category->slug }}?sort=" + sort ;
         });
     </script>
 
     <!---------------- Add To cart-------------->
     <script>
-        $('.add_to_cart').click(function(e) {
+        $(document).on('click', '.add_to_cart', function(e) {
             e.preventDefault();
             var product_id = $(this).data('product-id');
             var quantity = $(this).data('quantity');
@@ -371,7 +369,7 @@
             })
         })
     </script>
-    
+
     <script>
         function loadmoreData(page) {
             $.ajax({

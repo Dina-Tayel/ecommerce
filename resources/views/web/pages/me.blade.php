@@ -73,7 +73,7 @@ $('.qty-text').click(function(){
     if(input.val() ==1 )
     {
         return false ;
-    }else{
+    }else{ 
 
         var newVal=parseFloat( spinner.val()) ;
         $('#qty-input-'+row_id).val(newVal);

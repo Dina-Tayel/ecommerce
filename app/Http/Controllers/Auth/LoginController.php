@@ -44,15 +44,15 @@ class LoginController extends Controller
         return ['email'=>$request->email , 'password'=>$request->password , 'role'=>'admin' , 'status'=>'active'];
     }
 
-    public function authenticated($request , $user){
-        if($user->role=='admin'){
-            return redirect()->route('admin') ;
-        }elseif($user->role=='customer'){
-            return redirect('/') ;
-        }else{
-            return redirect('/') ;
+    // public function authenticated($request , $user){
+    //     if($user->role=='admin'){
+    //         return redirect()->route('admin') ;
+    //     }elseif($user->role=='customer'){
+    //         return redirect('/') ;
+    //     }else{
+    //         return redirect('/') ;
 
-        }
-    }
+    //     }
+    // }
     
 }

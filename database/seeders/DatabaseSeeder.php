@@ -26,14 +26,14 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $this->call([
-            UserSeeder::class,
-        ]);
+        // $this->call([
+        //     UserSeeder::class,
+        // ]);
 
-        \App\Models\User::factory(100)->create();
+        // \App\Models\User::factory(100)->create();
          \App\Models\Category::factory(50)->create();
         Brand::factory(50)->create();
         Product::factory(30)->create();
-        Image::factory(60)->create();
+        // Image::factory(60)->create();
     }
 }

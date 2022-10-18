@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Requests\Web\Checkout1Request;
+use App\Mail\OrderResponseMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
@@ -105,6 +107,9 @@ class CheckoutController extends Controller
 
             $total_amount =  number_format(str_replace(',', '', Cart::subtotal()), 2);
         }
+        $data=['user_name'=>Auth::user()->fullname , 'total_amount'=>$total_amount] ;
+        // Mail::to('dinatayel913@gmail.com')->send(new OrderResponseMail($data));
+        // dd('send successfully');
         $order = Order::create([
             'user_id' => Auth::user()->id,
             'order_number' => Str::upper('ORD-' . Str::random(10)),
