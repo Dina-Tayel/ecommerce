@@ -45,6 +45,10 @@ class Product extends Model
         return $this->belongsTo(User::class ,  'seller_id' , 'id')->where('role', 'seller');
     }
 
+    public function attributes()
+    {
+        return $this->hasMany(ProductAttribute::class , 'product_id' , 'id');
+    }
     
     // public function vendor()
     // {

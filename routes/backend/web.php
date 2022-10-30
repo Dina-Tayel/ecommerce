@@ -49,8 +49,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','admin']], function (
      Route::post('category/{id}/child',[ProductController::class,'getChildByParentId'])->name('products.child');
      //product images
      Route::resource('product-images',ImageController::class);
+     //product-attributes
+     Route::post('product-attributes/{product}' , [ProductController::class, 'productAttribute'])->name('product.attributes');
+     Route::delete('product-attributes/{productAttribute}' , [ProductController::class, 'productAttributeDelete'])->name('product.attributes.delete');
 
-    
+
      //users
      Route::resource('users',UserController::class);
     Route::get('/users-toggle/{id}', [CategoryController::class, 'toggle'])->name('users.toggle');

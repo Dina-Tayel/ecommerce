@@ -6,7 +6,8 @@
     <a href="{{ route('products.edit', $id) }}" class="btn btn-primary btn-sm mx-1"><i class="ri-edit-line "></i></a>
     {{-- update product images --}}
     <a href="{{ route('product-images.show', $id) }}" class="btn btn-dark btn-sm mx-1"><i class="ri-eye-line"></i></a>
-
+    {{-- add product attribute --}}
+    <a href="{{ route('products.show' , $id)}}" class="btn btn-outline-secondary btn-sm mx-1"><i class="bx bx-left-top-arrow-circle"></i></a>
     <!-- Delete Button trigger modal -->
     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
         data-bs-target="#deleteModal{{ $id }}">
@@ -98,8 +99,8 @@
                             <span class="badge bg-warning"></span>
                         </div>
                     </div>
-                    
-                  
+
+
 
                 </div>
                 <div class="modal-footer">

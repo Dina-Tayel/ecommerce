@@ -310,7 +310,7 @@
                                 @endif
                             </div>
                         </div>
-                        
+
                         {{ $products->appends($_GET)->links('vendor.pagination.custom') }}
 
                     </div>

@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\ProductAttribute;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class HomeController extends Controller
@@ -68,7 +69,8 @@ class HomeController extends Controller
     public function productDetails($slug)
     {
         $product = Product::where('slug', $slug)->with('images', 'related_projects')->latest()->first();
-        return view('web.pages.product-details', compact('product'));
+        $product_attributes = ProductAttribute::latest()->get();
+        return view('web.pages.products.product-details', compact('product','product_attributes'));
     }
 
     public function autosearch(Request $request)

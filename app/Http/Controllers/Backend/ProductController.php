@@ -8,13 +8,14 @@ use App\Traits\MediaTrait;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
-use App\Services\CategoryService;
 use App\DataTables\ProductDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Backend\ProductAttributeRequest;
 use App\Repositories\BrandRepository;
 use App\Repositories\CategoryRepository;
 use App\Http\Requests\Backend\ProductRequest;
 use App\Models\Image;
+use App\Models\ProductAttribute;
 
 class ProductController extends Controller
 {
@@ -62,17 +63,10 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-  
+
         $this->productService->store($request->validated());
         return redirect()->route('products.index')->withSuccess('ptoduct is addedd successfully');
     }
-
-
-    public function show($id)
-    {
-        //
-    }
-
 
     public function edit($id)
     {
@@ -103,5 +97,36 @@ class ProductController extends Controller
         return back();
     }
 
-   
+    public function show(Product $product)
+    {
+        // dd($product) ;
+        $product_attributes = ProductAttribute::orderBy('id', 'DESC')->get();
+        return view('backend.products.product-attribute', compact('product_attributes', 'product'));
+    }
+
+    public function productAttribute(Product $product, ProductAttributeRequest $request)
+    {
+        $data = $request->all();
+        foreach ($data['original_price'] as $key => $value) {
+
+            if (!empty($data['original_price'])) {
+
+                $attribute = new productAttribute;
+                $attribute['original_price'] = $value;
+                $attribute['offer_price'] = $data['offer_price'][$key];
+                $attribute['size'] = $data['size'][$key];
+                $attribute['stock'] = $data['stock'][$key];
+                $attribute['product_id'] = $product->id;
+                $attribute->save();
+            }
+        }
+        return redirect()->back()->withSuccess('product attributes is addedd successfully');
+    }
+
+    public function productAttributeDelete(ProductAttribute $productAttribute)
+    {
+
+        $productAttribute->delete();
+        return back()->withError('product attribute is deleted successfully');
+    }
 }

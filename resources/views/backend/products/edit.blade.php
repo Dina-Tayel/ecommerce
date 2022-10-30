@@ -247,7 +247,36 @@
 
                             </div>
                             <!--end row-->
-
+                            <div class="row gy-4">
+                                <div class="col-xxl-12 col-md-12">
+                                    <div>
+                                        <label for="basiInput" class="form-label">additional information</label>
+                                        <textarea id="" name="additional_info" class="form-control mytextarea @error('additional_info') is-invalid @enderror"
+                                            placeholder="enter some text..."> {{ old('additional_info') ?? $product->additional_info}}
+                                    </textarea>
+                                    </div>
+                                    @error('additional_info')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
+                            <div class="row gy-4">
+                                <div class="col-xxl-12 col-md-12">
+                                    <div>
+                                        <label for="basiInput" class="form-label">return cancellation</label>
+                                        <textarea id="" name="return_cancellation" class="form-control mytextarea @error('return_cancellation') is-invalid @enderror"
+                                            placeholder="enter some text..."> {{ old('return_cancellation') ?? $product->return_cancelled }}
+                                    </textarea>
+                                    </div>
+                                    @error('return_cancellation')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
                             <div class="row gy-4">
                                 <div class="col-xxl-12 col-md-12">
                                     <label for="basiInput" class="form-label"> Status </label>
@@ -312,6 +341,34 @@
                                 <!--end col-->
                             </div>
                             <!--end row-->
+
+                            <div class="row gy-4">
+                                <div class="col-xxl-12 col-md-12">
+                                    @php
+                                    $images=explode(',',$product->size_guide);
+                                @endphp
+                                    <div>
+                                        <label for="images" class="form-label">size guide Photo</label>
+                                        <input type="file" name="size_guide[]" class="form-control" id="images"
+                                             multiple>
+                                    </div>
+
+                                     @foreach ($images as $key => $value )
+                                     <img src="{{asset('uploads/products/size_guide/'. $value)}}" style="width:100px" class="img-thumbnail image-preview1"
+                                         id="img">
+                                     @endforeach
+
+                                    <!--end col-->
+                                    @error('size_guide')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="user-image mb-3 text-center">
+                                    <div class="imgPreview"> </div>
+                                </div>   
+                                <!--end row-->
+                                <!--end col-->
+                            </div>
                             <button type="submit" class="btn btn-primary"> Update</button>
 
                         </form>
@@ -327,7 +384,7 @@
 @push('scripts')
 
     <script>
-         var child_cat_id = {{ $product->child_cat_id}} ;
+         var child_cat_id = '{{ $product->child_cat_id}} ';
         $('#cat_id').change(function() {
             var cat_id = $(this).val();
             var url = "{{ route('products.child', ':cat_id') }}";

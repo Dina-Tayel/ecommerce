@@ -154,98 +154,108 @@
                             <span class="text-muted">(8 Reviews)</span>
                         </div>
                         {{-- <h4 class="price mb-4">$120.99 <span>$190</span></h4> --}}
-                        <h4 class="price mb-4">{{ number_format($product->offer_price, 2) }}
+                        {{-- <h4 class="price mb-4">{{ number_format($product->offer_price, 2) }}
                             @if ($product->discount > 0)
                                 <span>{{ number_format($product->price, 2) }} </span>
                             @endif
-                            </h6>
-                            <!-- Overview -->
-                            <div class="short_overview mb-4">
-                                <h6>Overview</h6>
-                                <p> {!! $product->summery !!}</p>
-                            </div>
+                        </h4> --}}
+                        <h4 class="price mb-4" id="size_price">{{ number_format($product->offer_price, 2) }}
+                            @if ($product->discount > 0)
+                                <span>{{ number_format($product->price, 2) }} </span>
+                            @endif
+                        </h4> 
+                        <!-- Overview -->
+                        <div class="short_overview mb-4">
+                            <h6>Overview</h6>
+                            <p> {!! $product->summery !!}</p>
+                        </div>
 
-                            <!-- Color Option -->
-                            <div class="widget p-0 color mb-3">
-                                <h6 class="widget-title">Color</h6>
-                                <div class="widget-desc d-flex">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio1" name="customRadio"
-                                            class="custom-control-input">
-                                        <label class="custom-control-label black" for="customRadio1"></label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio2" name="customRadio"
-                                            class="custom-control-input">
-                                        <label class="custom-control-label pink" for="customRadio2"></label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio3" name="customRadio"
-                                            class="custom-control-input">
-                                        <label class="custom-control-label red" for="customRadio3"></label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio4" name="customRadio"
-                                            class="custom-control-input">
-                                        <label class="custom-control-label purple" for="customRadio4"></label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio5" name="customRadio"
-                                            class="custom-control-input">
-                                        <label class="custom-control-label white" for="customRadio5"></label>
-                                    </div>
+                        <!-- Color Option -->
+                        <div class="widget p-0 color mb-3">
+                            <h6 class="widget-title">Color</h6>
+                            <div class="widget-desc d-flex">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="customRadio1" name="customRadio"
+                                        class="custom-control-input">
+                                    <label class="custom-control-label black" for="customRadio1"></label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="customRadio2" name="customRadio"
+                                        class="custom-control-input">
+                                    <label class="custom-control-label pink" for="customRadio2"></label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="customRadio3" name="customRadio"
+                                        class="custom-control-input">
+                                    <label class="custom-control-label red" for="customRadio3"></label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="customRadio4" name="customRadio"
+                                        class="custom-control-input">
+                                    <label class="custom-control-label purple" for="customRadio4"></label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="customRadio5" name="customRadio"
+                                        class="custom-control-input">
+                                    <label class="custom-control-label white" for="customRadio5"></label>
                                 </div>
                             </div>
+                        </div>
 
+                        @if ($product_attributes->count() > 0)
                             <!-- Size Option -->
                             <div class="widget p-0 size mb-3">
                                 <h6 class="widget-title">Size</h6>
-                                <div class="widget-desc">
+                                <div class="widget-desc" style="display: block">
                                     <ul>
-                                        <li><a href="#">XS</a></li>
-                                        <li><a href="#">S</a></li>
-                                        <li><a href="#">M</a></li>
-                                        <li><a href="#">L</a></li>
-                                        <li><a href="#">XL</a></li>
+                                        @foreach ($product_attributes as $product_attribute)
+                                            <li>
+                                                <a href="#" class="size_option" id="{{ $product_attribute->id }}"
+                                                    data-original_price="{{ number_format($product_attribute->original_price, 2) }}"
+                                                    data-offer_price="{{ number_format($product_attribute->offer_price , 2) }}">
+                                                    {{ $product_attribute->size }}</a>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             </div>
+                        @endif
 
-                            <!-- Add to Cart Form -->
-                            <form class="cart clearfix my-5 d-flex flex-wrap align-items-center" method="post">
-                                <div class="quantity">
-                                    <input type="number" class="qty-text form-control" id="qty2" step="1"
-                                        min="1" max="12" name="quantity" value="1">
-                                </div>
-                                <button type="submit" name="addtocart" value="5"
-                                    class="btn btn-primary mt-1 mt-md-0 ml-1 ml-md-3">Add to cart</button>
-                            </form>
-
-                            <!-- Others Info -->
-                            <div class="others_info_area mb-3 d-flex flex-wrap">
-                                <a class="add_to_wishlist" href="wishlist.html"><i class="fa fa-heart"
-                                        aria-hidden="true"></i> WISHLIST</a>
-                                <a class="add_to_compare" href="compare.html"><i class="fa fa-th"
-                                        aria-hidden="true"></i> COMPARE</a>
-                                <a class="share_with_friend" href="#"><i class="fa fa-share"
-                                        aria-hidden="true"></i> SHARE WITH FRIEND</a>
+                        <!-- Add to Cart Form -->
+                        <form class="cart clearfix my-5 d-flex flex-wrap align-items-center" method="post">
+                            <div class="quantity">
+                                <input type="number" id="qty-id" class="qty-text form-control" id="qty2"
+                                    step="1" min="1" max="12" name="quantity" value="1">
                             </div>
+                            <button type="submit" name="addtocart" value="5"
+                                class="btn btn-primary mt-1 mt-md-0 ml-1 ml-md-3">Add to cart</button>
+                        </form>
 
-                            <!-- Size Guide -->
-                            <div class="sizeguide">
-                                <h6>Size Guide</h6>
-                                <div class="size_guide_thumb d-flex">
-                                    <a class="size_guide_img" href="img/bg-img/size-1.png"
-                                        style="background-image: url(img/bg-img/size-1.png);">
+                        <!-- Others Info -->
+                        <div class="others_info_area mb-3 d-flex flex-wrap">
+                            <a class="add_to_wishlist" href="wishlist.html"><i class="fa fa-heart"
+                                    aria-hidden="true"></i> WISHLIST</a>
+                            <a class="add_to_compare" href="compare.html"><i class="fa fa-th" aria-hidden="true"></i>
+                                COMPARE</a>
+                            <a class="share_with_friend" href="#"><i class="fa fa-share" aria-hidden="true"></i>
+                                SHARE WITH FRIEND</a>
+                        </div>
+
+                        <!-- Size Guide -->
+                        <div class="sizeguide">
+                            <h6>Size Guide</h6>
+                            <div class="size_guide_thumb d-flex">
+                                @php
+                                    $images = explode(',', $product->size_guide);
+                                @endphp
+                                @foreach ($images as $image)
+                                    <a class="size_guide_img" href="{{ asset('uploads/products/size_guide/' . $image) }}"
+                                        style="background-image: url({{ asset('uploads/products/size_guide/' . $image) }});">
                                     </a>
-                                    <a class="size_guide_img" href="img/bg-img/size-2.png"
-                                        style="background-image: url(img/bg-img/size-2.png);">
-                                    </a>
-                                    <a class="size_guide_img" href="img/bg-img/size-3.png"
-                                        style="background-image: url(img/bg-img/size-3.png);">
-                                    </a>
-                                </div>
+                                @endforeach
+
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -266,7 +276,7 @@
                                         class="text-muted">(3)</span></a>
                             </li>
                             <li class="nav-item">
-                                <a href="#addi-info" class="nav-link" data-toggle="tab" role="tab">Additional
+                                <a href="#" class="nav-link" data-toggle="tab" role="tab">Additional
                                     Information</a>
                             </li>
                             <li class="nav-item">
@@ -379,55 +389,14 @@
                             <div role="tabpanel" class="tab-pane fade" id="addi-info">
                                 <div class="additional_info_area">
                                     <h5>Additional Info</h5>
-                                    <p>What should I do if I receive a damaged parcel?
-                                        <br> <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit
-                                            impedit similique qui, itaque delectus labore.</span>
-                                    </p>
-                                    <p>I have received my order but the wrong item was delivered to me.
-                                        <br> <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis quam
-                                            voluptatum beatae harum tempore, ab?</span>
-                                    </p>
-                                    <p>Product Receipt and Acceptance Confirmation Process
-                                        <br> <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum
-                                            ducimus, temporibus soluta impedit minus rerum?</span>
-                                    </p>
-                                    <p class="mb-0">How do I cancel my order?
-                                        <br> <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum eius
-                                            eum, minima!</span>
-                                    </p>
+                                    <p>{!! $product->additional_info !!}</p>
                                 </div>
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade" id="refund">
                                 <div class="refund_area">
                                     <h6>Return Policy</h6>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa quidem, eos eius
-                                        laboriosam voluptates totam mollitia repellat rem voluptate obcaecati quas fuga
-                                        similique impedit cupiditate vitae repudiandae. Rem, tenetur placeat!</p>
-
-                                    <h6>Return Criteria</h6>
-                                    <ul class="mb-30 ml-30">
-                                        <li><i class="icofont-check"></i> Package broken</li>
-                                        <li><i class="icofont-check"></i> Physical damage in the product</li>
-                                        <li><i class="icofont-check"></i> Software/hardware problem</li>
-                                        <li><i class="icofont-check"></i> Accessories missing or damaged etc.</li>
-                                    </ul>
-
-                                    <h6>Q. What should I do if I receive a damaged parcel?</h6>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit impedit
-                                        similique qui, itaque delectus labore.</p>
-
-                                    <h6>Q. I have received my order but the wrong item was delivered to me.</h6>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis quam voluptatum
-                                        beatae harum tempore, ab?</p>
-
-                                    <h6>Q. Product Receipt and Acceptance Confirmation Process</h6>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum ducimus, temporibus
-                                        soluta impedit minus rerum?</p>
-
-                                    <h6>Q. How do I cancel my order?</h6>
-                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
-                                        eius eum, minima!</p>
+                                    {!! $product->return_cancellation !!}
                                 </div>
                             </div>
                         </div>
@@ -514,3 +483,19 @@
     </section>
     <!-- Related Products Area -->
 @endsection
+@push('scripts')
+    <script>
+        $(document).on('click', '.size_option', function() {
+            var original_price = $(this).data('original_price');
+            var offer_price = $(this).data('offer_price');
+            var html_option = offer_price ;
+            if (offer_price > 0) {
+                html_option += "<span> "+original_price+" </span>"
+                $('#size_price').html(html_option);
+            }else{
+                $('#size_price').html(original_price)
+
+            }
+        })
+    </script>
+@endpush

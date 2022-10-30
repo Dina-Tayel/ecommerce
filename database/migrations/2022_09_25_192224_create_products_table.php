@@ -19,7 +19,10 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->mediumText('summary');
             $table->longText('desc')->nullable();
+            $table->longText('additional_info')->nullable() ;
+            $table->longText('return_cancellation')->nullable();
             $table->string('img');
+            $table->string('size_guide')->nullable();
             $table->float('price',8,2)->default(0);
             $table->float('offer_price',8,2)->default(0);
             $table->float('discount',8,2)->default(0);

@@ -240,7 +240,36 @@
 
                             </div>
                             <!--end row-->
-
+                            <div class="row gy-4">
+                                <div class="col-xxl-12 col-md-12">
+                                    <div>
+                                        <label for="basiInput" class="form-label">additional information</label>
+                                        <textarea id="" name="additional_info" class="form-control mytextarea @error('additional_info') is-invalid @enderror"
+                                            placeholder="enter some text..."> {{ old('additional_info') }}
+                                    </textarea>
+                                    </div>
+                                    @error('additional_info')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
+                            <div class="row gy-4">
+                                <div class="col-xxl-12 col-md-12">
+                                    <div>
+                                        <label for="basiInput" class="form-label">return cancellation</label>
+                                        <textarea id="" name="return_cancellation" class="form-control mytextarea @error('return_cancellation') is-invalid @enderror"
+                                            placeholder="enter some text..."> {{ old('return_cancellation') }}
+                                    </textarea>
+                                    </div>
+                                    @error('return_cancellation')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
                             <div class="row gy-4">
                                 <div class="col-xxl-12 col-md-12">
                                     <label for="basiInput" class="form-label"> Status </label>
@@ -304,7 +333,32 @@
                                 <!--end col-->
                             </div>
                             <!--end row-->
+                           
+                            <div class="user-image mb-3 text-center">
+                                <div class="imgPreview"> </div>
+                            </div>  
+                            <div class="row gy-4">
+                                <div class="col-xxl-12 col-md-12">
+                                    <div>
+                                        <label for="images" class="form-label">size guide Photo</label>
+                                        <input type="file" name="size_guide[]" class="form-control" id="images"
+                                             multiple>
+                                    </div>
+                                    <img src="" style="width:100px" class="img-thumbnail image-preview1"
+                                        id="img">
 
+                                    <!--end col-->
+                                    @error('size_guide')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="user-image mb-3 text-center">
+                                    <div class="imgPreview"> </div>
+                                </div>   
+                                <!--end row-->
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
                             <!--end row-->
                             <button type="submit" class="btn btn-primary"> Create</button>
 
@@ -319,6 +373,26 @@
 @endsection
 
 @push('scripts')
+{{-- <script>
+    $(function() {
+    // Multiple images preview with JavaScript
+    var multiImgPreview = function(input, imgPreviewPlaceholder) {
+        if (input.files) {
+            var filesAmount = input.files.length;
+            for (i = 0; i < filesAmount; i++) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    $($.parseHTML('<img width="50px">')).attr('src', event.target.result).appendTo(imgPreviewPlaceholder);
+                }
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+    };
+    $('#images').on('change', function() {
+        multiImgPreview(this, 'div.imgPreview');
+    });
+    });    
+</script> --}}
     <script>
         $('#cat_id').change(function() {
             var cat_id = $(this).val();
