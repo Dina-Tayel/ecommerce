@@ -163,7 +163,7 @@
                             @if ($product->discount > 0)
                                 <span>{{ number_format($product->price, 2) }} </span>
                             @endif
-                        </h4> 
+                        </h4>
                         <!-- Overview -->
                         <div class="short_overview mb-4">
                             <h6>Overview</h6>
@@ -212,7 +212,7 @@
                                             <li>
                                                 <a href="#" class="size_option" id="{{ $product_attribute->id }}"
                                                     data-original_price="{{ number_format($product_attribute->original_price, 2) }}"
-                                                    data-offer_price="{{ number_format($product_attribute->offer_price , 2) }}">
+                                                    data-offer_price="{{ number_format($product_attribute->offer_price, 2) }}">
                                                     {{ $product_attribute->size }}</a>
                                             </li>
                                         @endforeach
@@ -273,7 +273,7 @@
                             </li>
                             <li class="nav-item">
                                 <a href="#reviews" class="nav-link" data-toggle="tab" role="tab">Reviews <span
-                                        class="text-muted">(3)</span></a>
+                                        class="text-muted">({{$product->reviews->count()}})</span></a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link" data-toggle="tab" role="tab">Additional
@@ -297,21 +297,30 @@
                                 <div class="reviews_area">
                                     <ul>
                                         <li>
-                                            <div class="single_user_review mb-15">
-                                                <div class="review-rating">
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <span>for Quality</span>
+                                            @if ($product->reviews->count() > 0)
+                                                @foreach ( $product->reviews as $key=> $review)
+                                                    
+                                                <div class="single_user_review mb-15">
+                                                    <div class="review-rating">
+                                                        @for ($i=0 ; $i<5 ; $i++)
+                                                        @if ($review->rate > 0)
+                                          
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+
+                                                            @else
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        @endif
+                                                        @endfor
+                                                        <span>{{ $review->reason}}</span>
+                                                    </div>
+                                                    <div class="review-details">
+                                                        <p>by <a href="#">{{ $review->user->username}}</a> on <span>{{ Carbon\Carbon::parse($review->created_at)->format('m, D Y')}}</span>
+                                                        </p>
+                                                        <p>{{ $review->review}}</p>
+                                                    </div>
                                                 </div>
-                                                <div class="review-details">
-                                                    <p>by <a href="#">Designing World</a> on <span>12 Sep 2019</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="single_user_review mb-15">
+                                                @endforeach
+                                            {{-- <div class="single_user_review mb-15">
                                                 <div class="review-rating">
                                                     <i class="fa fa-star" aria-hidden="true"></i>
                                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -338,164 +347,222 @@
                                                     <p>by <a href="#">Designing World</a> on <span>12 Sep 2019</span>
                                                     </p>
                                                 </div>
-                                            </div>
+                                            </div> --}}
+                                            @endif
                                         </li>
                                     </ul>
                                 </div>
 
                                 <div class="submit_a_review_area mt-50">
                                     <h4>Submit A Review</h4>
-                                    <form action="#" method="post">
-                                        <div class="form-group">
-                                            <span>Your Ratings</span>
-                                            <div class="stars">
-                                                <input type="radio" name="star" class="star-1" id="star-1">
-                                                <label class="star-1" for="star-1">1</label>
-                                                <input type="radio" name="star" class="star-2" id="star-2">
-                                                <label class="star-2" for="star-2">2</label>
-                                                <input type="radio" name="star" class="star-3" id="star-3">
-                                                <label class="star-3" for="star-3">3</label>
-                                                <input type="radio" name="star" class="star-4" id="star-4">
-                                                <label class="star-4" for="star-4">4</label>
-                                                <input type="radio" name="star" class="star-5" id="star-5">
-                                                <label class="star-5" for="star-5">5</label>
-                                                <span></span>
+                                    @include('web.partials.ajax-messages')
+                                    @auth
+                                        <form action="" method="post" id="review-form">
+                                            @csrf
+                                            <div class="form-group">
+                                                <span>Your Ratings</span>
+                                                <div class="stars" id="rate">
+                                                    <input type="radio" name="rate" class="star-1" id="star-1"
+                                                        value="1" {{ old('rate') == '1' ? 'selected' : '' }}>
+                                                    <label class="star-1" for="star-1">1</label>
+                                                    <input type="radio" name="rate" class="star-2" id="star-2"
+                                                        value="2" {{ old('rate') == '2' ? 'selected' : '' }}>
+                                                    <label class="star-2" for="star-2">2</label>
+                                                    <input type="radio" name="rate" class="star-3" id="star-3"
+                                                        value="3" {{ old('rate') == '3' ? 'selected' : '' }}>
+                                                    <label class="star-3" for="star-3">3</label>
+                                                    <input type="radio" name="rate" class="star-4" id="star-4"
+                                                        value="4" {{ old('rate') == '4' ? 'selected' : '' }}>
+                                                    <label class="star-4" for="star-4">4</label>
+                                                    <input type="radio" name="rate" class="star-5" id="star-5"
+                                                        value="5" {{ old('rate') == '5' ? 'selected' : '' }}>
+                                                    <label class="star-5" for="star-5">5</label>
+                                                    <span></span>
+                                                </div>
+                                                <p class="text-danger" id="rate_error"></p>
+
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="name">Nickname</label>
-                                            <input type="email" class="form-control" id="name"
-                                                placeholder="Nazrul">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="options">Reason for your rating</label>
-                                            <select class="form-control small right py-0 w-100" id="options">
-                                                <option>Quality</option>
-                                                <option>Value</option>
-                                                <option>Design</option>
-                                                <option>Price</option>
-                                                <option>Others</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="comments">Comments</label>
-                                            <textarea class="form-control" id="comments" rows="5" data-max-length="150"></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    </form>
-                                </div>
-                            </div>
+                                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <div class="form-group">
+                                                <label for="options">Reason for your rating</label>
+                                                <select name="reason" class="form-control small right py-0 w-100"
+                                                    id="reason">
+                                                    <option selected disabled>selcet reason for rating</option>
+                                                    <option value="quality"
+                                                       >Quality</option>
+                                                    <option value="value">
+                                                        Value</option>
+                                                    <option value="design" >
+                                                        Design</option>
+                                                    <option value="price" >
+                                                        Price</option>
+                                                    <option value="others" >
+                                                        Others</option>
+                                                </select>
 
-                            <div role="tabpanel" class="tab-pane fade" id="addi-info">
-                                <div class="additional_info_area">
-                                    <h5>Additional Info</h5>
-                                    <p>{!! $product->additional_info !!}</p>
-                                </div>
-                            </div>
+                                                <p class="text-danger" id="reason_error"></p>
 
-                            <div role="tabpanel" class="tab-pane fade" id="refund">
-                                <div class="refund_area">
-                                    <h6>Return Policy</h6>
-                                    {!! $product->return_cancellation !!}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="comments">Comments</label>
+                                                <textarea class="form-control" name="review" id="review" rows="5" data-max-length="150"></textarea>
+
+                                                <p class="text-danger " id="review_error"></p>
+
+                                            </div>
+                                            <button type="submit" class="btn btn-primary" id="review-form-btn">Submit
+                                                Review</button>
+                                        </form>
+                                    @else
+                                        <p class="py-2"> Tou need to login for writing review . <a
+                                                href="{{ route('user.login') }}">Click Here ! </a> to login</p>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane fade" id="addi-info">
+                                    <div class="additional_info_area">
+                                        <h5>Additional Info</h5>
+                                        <p>{!! $product->additional_info !!}</p>
+                                    </div>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane fade" id="refund">
+                                    <div class="refund_area">
+                                        <h6>Return Policy</h6>
+                                        {!! $product->return_cancellation !!}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- Single Product Details Area End -->
+        </section>
+        <!-- Single Product Details Area End -->
 
-    <!-- Related Products Area -->
-    <section class="you_may_like_area section_padding_0_100 clearfix">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section_heading new_arrivals">
-                        <h5>You May Also Like</h5>
+        <!-- Related Products Area -->
+        <section class="you_may_like_area section_padding_0_100 clearfix">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="section_heading new_arrivals">
+                            <h5>You May Also Like</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="you_make_like_slider owl-carousel">
+                            @if ($product)
+                                @foreach ($product->related_projects as $related_product)
+                                    @if ($product->id !== $related_product->id)
+                                        <!-- Single Product -->
+                                        <div class="single-product-area">
+                                            <div class="product_image">
+                                                <!-- Product Image -->
+                                                <img class="normal_img" src="{{ $related_product->image_path }}"
+                                                    alt="">
+                                                {{-- <img class="hover_img" src="img/product-img/new-1.png" alt=""> --}}
+
+                                                <!-- Product Badge -->
+                                                <div class="product_badge">
+                                                    <span>{{ $related_product->condition }}</span>
+                                                </div>
+
+                                                <!-- Wishlist -->
+                                                <div class="product_wishlist">
+                                                    <a href="wishlist.html"><i class="icofont-heart"></i></a>
+                                                </div>
+
+                                                <!-- Compare -->
+                                                <div class="product_compare">
+                                                    <a href="compare.html"><i class="icofont-exchange"></i></a>
+                                                </div>
+                                            </div>
+
+                                            <!-- Product Description -->
+                                            <div class="product_description">
+                                                <!-- Add to cart -->
+                                                <div class="product_add_to_cart">
+                                                    <a href="#"><i class="icofont-shopping-cart"></i> Add to Cart</a>
+                                                </div>
+
+                                                <!-- Quick View -->
+                                                <div class="product_quick_view">
+                                                    <a href="#" data-toggle="modal" data-target="#quickview"><i
+                                                            class="icofont-eye-alt"></i> Quick View</a>
+                                                </div>
+
+                                                <p class="brand_name">{{ ucfirst($related_product->brand->title) }}</p>
+                                                <a
+                                                    href="{{ route('product.details', $related_product->slug) }}">{{ ucfirst($product->title) }}</a>
+                                                <h6 class="product-price">
+                                                    {{ number_format($related_product->offer_price, 2) }}
+                                                    @if ($related_product->discount > 0)
+                                                        <span>{{ number_format($related_product->price, 2) }} </span>
+                                                    @endif
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
+
+
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="you_make_like_slider owl-carousel">
-                        @if ($product)
-                            @foreach ($product->related_projects as $related_product)
-                                @if ($product->id !== $related_product->id)
-                                    <!-- Single Product -->
-                                    <div class="single-product-area">
-                                        <div class="product_image">
-                                            <!-- Product Image -->
-                                            <img class="normal_img" src="{{ $related_product->image_path }}"
-                                                alt="">
-                                            {{-- <img class="hover_img" src="img/product-img/new-1.png" alt=""> --}}
+        </section>
+        <!-- Related Products Area -->
+    @endsection
+    @push('scripts')
+        <script>
+            $(document).on('click', '.size_option', function() {
+                var original_price = $(this).data('original_price');
+                var offer_price = $(this).data('offer_price');
+                var html_option = offer_price;
+                if (offer_price > 0) {
+                    html_option += "<span> " + original_price + " </span>"
+                    $('#size_price').html(html_option);
+                } else {
+                    $('#size_price').html(original_price)
 
-                                            <!-- Product Badge -->
-                                            <div class="product_badge">
-                                                <span>{{ $related_product->condition }}</span>
-                                            </div>
+                }
+            })
+        </script>
+        <script>
+            $('.success-msg').hide();
+            $(document).on('click', '#review-form-btn', function(e) {
+                e.preventDefault();
+                $('#rate_error').text('');
+                $('#review_error').text('');
+                $('#reason_error').text('');
+                var formData = $('#review-form').serialize();
+                var route = "{{ route('product.review') }}";
+                var token = "{{ csrf_token() }}";
+                $.ajax({
+                    data: formData,
+                    url: route,
+                    type: 'post',
+                    success: function(response) {
+                        $('.success-msg').show('');
+                        $('.success-msg').text(response['success']);
+                        // $('#review').val('');
+                        // $('#rate').val('');
+                        // $("#reason option").prop("selected", false);
+                        // $("#reason").trigger("change");
+                        $("#review-form")[0].reset();
 
-                                            <!-- Wishlist -->
-                                            <div class="product_wishlist">
-                                                <a href="wishlist.html"><i class="icofont-heart"></i></a>
-                                            </div>
-
-                                            <!-- Compare -->
-                                            <div class="product_compare">
-                                                <a href="compare.html"><i class="icofont-exchange"></i></a>
-                                            </div>
-                                        </div>
-
-                                        <!-- Product Description -->
-                                        <div class="product_description">
-                                            <!-- Add to cart -->
-                                            <div class="product_add_to_cart">
-                                                <a href="#"><i class="icofont-shopping-cart"></i> Add to Cart</a>
-                                            </div>
-
-                                            <!-- Quick View -->
-                                            <div class="product_quick_view">
-                                                <a href="#" data-toggle="modal" data-target="#quickview"><i
-                                                        class="icofont-eye-alt"></i> Quick View</a>
-                                            </div>
-
-                                            <p class="brand_name">{{ ucfirst($related_product->brand->title) }}</p>
-                                            <a
-                                                href="{{ route('product.details', $related_product->slug) }}">{{ ucfirst($product->title) }}</a>
-                                            <h6 class="product-price">
-                                                {{ number_format($related_product->offer_price, 2) }}
-                                                @if ($related_product->discount > 0)
-                                                    <span>{{ number_format($related_product->price, 2) }} </span>
-                                                @endif
-                                            </h6>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endforeach
-                        @endif
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Related Products Area -->
-@endsection
-@push('scripts')
-    <script>
-        $(document).on('click', '.size_option', function() {
-            var original_price = $(this).data('original_price');
-            var offer_price = $(this).data('offer_price');
-            var html_option = offer_price ;
-            if (offer_price > 0) {
-                html_option += "<span> "+original_price+" </span>"
-                $('#size_price').html(html_option);
-            }else{
-                $('#size_price').html(original_price)
-
-            }
-        })
-    </script>
-@endpush
+                    },
+                    error: function(xhr, response, status) {
+                        $.each(xhr.responseJSON.errors, function(key, value) {
+                            $('#' + key + '_error').text(value[0]);
+                        })
+                    }
+                })
+            })
+        </script>
+    @endpush

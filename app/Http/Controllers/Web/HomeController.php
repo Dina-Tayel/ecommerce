@@ -68,7 +68,9 @@ class HomeController extends Controller
 
     public function productDetails($slug)
     {
-        $product = Product::where('slug', $slug)->with('images', 'related_projects')->latest()->first();
+        $product = Product::where('slug', $slug)->with(['images', 'related_projects','reviews'=>function($q){
+            $q->paginate(5);
+        }])->latest()->first();
         $product_attributes = ProductAttribute::latest()->get();
         return view('web.pages.products.product-details', compact('product','product_attributes'));
     }

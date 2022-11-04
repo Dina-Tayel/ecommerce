@@ -11,6 +11,7 @@ use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CheckoutController;
 use App\Http\Controllers\Web\CouponController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\productReviewController;
 use App\Http\Controllers\Web\ShopController;
 use App\Http\Controllers\Web\UserController;
 use App\Http\Controllers\WishlistController;
@@ -77,6 +78,9 @@ Route::group(['prefix'=>'user'] , function(){
     //search product and auto search product
     Route::get('/autoseacrh',[HomeController::class, 'autosearch'])->name('autosearch');
     Route::get('/search',[HomeController::class, 'search'])->name('search');
+
+    //reviews
+    Route::post('/product-review' , [productReviewController::class , 'productReview'])->name('product.review');
 
 });
 

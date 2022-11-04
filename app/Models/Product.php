@@ -65,5 +65,9 @@ class Product extends Model
         return $this->hasMany(Product::class,'category_id' , 'category_id')->where('status','active')->limit(10);
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class , 'product_id' , 'id');
+    }
     
 }
