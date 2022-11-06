@@ -20,20 +20,20 @@ class HomeController extends Controller
    
     public function index()
     {
-        // return view('home');
+        return redirect()->route('home');
         // return redirect(auth()->user()->role) ;  // route---> admin
 
 
-        if (! auth()->user()) {
-            return redirect('/');
-        }
+        // if (! auth()->user()) {
+        //     return redirect('/');
+        // }
 
-        if (auth()->user()->role == 'customer') {
-            return redirect('/');
+        // if (auth()->user()->role == 'customer') {
+        //     return redirect('/');
 
-        } elseif (auth()->user()->role == 'admin') {
-            return redirect(auth()->user()->role);  // route---> admin
-        }
+        // } elseif (auth()->user()->role == 'admin') {
+        //     return redirect(auth()->user()->role);  // route---> admin
+        // }
         
     }
 }

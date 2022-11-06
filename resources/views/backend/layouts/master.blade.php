@@ -836,16 +836,19 @@
                                 {{-- <a class="dropdown-item" href="auth-logout-basic.html"><i
                                 class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle" data-key="t-logout">Logout</span></a> --}}
-                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                <a class="dropdown-item" href="{{ route('logout', 'admin') }}"
                                     onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                    class="d-none">
-                                    @csrf
-                                </form>
+                                @if (auth('admin')->check())
+                                    <form id="logout-form" action="{{ route('logout', 'admin') }}" method="POST"
+                                        class="d-none">
+                                        @csrf
+                                    </form>
+                                
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -905,8 +908,8 @@
             <div class="page-content">
                 <div class="container-fluid">
 
-                      <!-- start page title -->
-                      <div class="row">
+                    <!-- start page title -->
+                    <div class="row">
                         <div class="col-12">
 
                             @yield('breadcrumb')

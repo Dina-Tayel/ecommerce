@@ -25,6 +25,7 @@ Route::group(['middleware'=>'guest'] , function(){
 
 
 Route::get('seller', [AdminController::class, 'index'])->name('seller')->middleware(['auth','vendor']);
+
 // Route::get('customer',[])
 
 

@@ -24,14 +24,30 @@
                         <div class="login_form mb-50">
                             <h5 class="mb-3">Login</h5>
     
-                            <form action="{{ route('user.submit')}}" method="post">
+                           
+                            {{-- <form action="{{ route('user.submit')}}" method="post"> --}}
+                                <form method="POST" action="{{ route('admin.login','user') }}">
                                 @csrf
                                 <div class="form-group">
-                                    <input type="email" class="form-control" name="email" id="username" placeholder="Email or Username">
+                                    <input type="email" class="form-control" name="email" value="{{ old('email')}}" id="username" placeholder="Email or Username">
                                 </div>
+                                @error('email')
+                                {{-- <span class="invalid-feedback" role="alert">
+                                    <strong></strong> --}}
+                                    <p class="text-danger">{{ $message }}</p>
+                                @if (session('error'))
+                                <p class="text-danger">{{ session('error')}}</p>
+                            @endif
+                            @enderror
                                 <div class="form-group">
                                     <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                                 </div>
+                                @error('password')
+                                                    {{-- <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span> --}}
+                                                    <p class="text-danger">{{ $message }}</p>
+                                                @enderror
                                 <div class="form-check">
                                     <div class="custom-control custom-checkbox mb-3 pl-1">
                                         <input type="checkbox" class="custom-control-input" id="customChe">

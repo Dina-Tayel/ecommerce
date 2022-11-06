@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\UserController;
@@ -14,15 +15,20 @@ use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Auth\UpdateUserProfileInformation;
 use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\ShippingController;
+use GuzzleHttp\Middleware;
 
 // login
-Auth::routes([ 'login' => false]);
-Route::get('admin/login', 'App\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');
-Route::post('admin/login', 'App\Http\Controllers\Auth\LoginController@login');
+Auth::routes([ 'login' => false , 'logout'=>false]);
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth','admin']], function () {
+Route::get('login/{type}', [LoginController::class , 'loginForm'])->name('admin.login');
 
-    Route::get('/', [AdminController::class, 'index'])->name('admin')->middleware('admin');
+Route::post('login/{type}', 'App\Http\Controllers\Auth\LoginController@login');
+
+Route::post('/logout/{type}' , [LoginController::class , 'logout'])->name('logout');
+
+Route::group(['prefix' => 'admin' , 'middleware'=>'auth:admin'], function () {
+
+    Route::get('/home', [AdminController::class, 'index'])->name('admin');
 
     //admin-profile
     Route::resource('profile', ProfileController::class)->only([

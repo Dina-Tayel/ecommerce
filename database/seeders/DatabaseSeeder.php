@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
+            AdminSeeder::class ,
+            SellerSeeder::class ,
         ]);
 
         // \App\Models\User::factory(100)->create();
@@ -36,4 +38,5 @@ class DatabaseSeeder extends Seeder
         Product::factory(30)->create();
         // Image::factory(60)->create();
     }
+
 }

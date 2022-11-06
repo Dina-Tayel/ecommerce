@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -40,7 +41,8 @@ class ProductFactory extends Factory
             'condition' => $this->faker->randomElement(['new', 'popular', 'winter']),
             'category_id' => $this->faker->randomElement(Category::where('is_parent', 1)->pluck('id')->toArray()),
             'child_cat_id' => $this->faker->randomElement(Category::where('is_parent', 0)->pluck('parent_id')->toArray()),
-            'seller_id' => $this->faker->randomElement(User::where('role', 'seller')->pluck('id')->toArray()),
+            // 'seller_id' => $this->faker->randomElement(User::where('role', 'seller')->pluck('id')->toArray()),
+            'seller_id' => $this->faker->randomElement(Seller::pluck('id')->toArray()),
             'brand_id' => $this->faker->randomElement(Brand::pluck('id')->toArray()),
 
         ];

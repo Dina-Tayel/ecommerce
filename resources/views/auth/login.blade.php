@@ -71,7 +71,8 @@
                                     <p class="text-muted">Sign in to continue to Velzon.</p>
                                 </div>
                                 <div class="p-2 mt-4">
-                                    <form method="POST" action="{{ route('login') }}">
+                                   
+                                    <form method="POST" action="{{ route('admin.login','admin') }}">
                                         @csrf                
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Email</label>
@@ -79,7 +80,9 @@
                                                 class="form-control @error('email') is-invalid @enderror" name="email"
                                                 value="{{ old('email') }}" placeholder="Enter Email" required
                                                 autocomplete="email" autofocus>
-
+                                                @if (session('error'))
+                                                <p class="text-danger">{{ session('error')}}</p>
+                                            @endif
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

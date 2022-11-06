@@ -164,16 +164,23 @@
                                     <li><a href="{{ route('user.dashboard') }}">My Account</a></li>
                                     <li><a href="{{ route('user.order') }}">Orders List</a></li>
                                     <li><a href="wishlist.html">Wishlist</a></li>
-                                    <li><a href="{{ route('logout') }}"
+                                    <li><a href="#"
                                             onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();"><i
                                                 class="icofont-logout"></i> Logout</a></li>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    {{-- <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        class="d-none">
+                                        @csrf
+                                    </form> --}}
+                                    @if (auth('web')->check())
+
+                                    <form id="logout-form" action="{{ route('logout', 'web') }}" method="POST"
                                         class="d-none">
                                         @csrf
                                     </form>
+                                    @endif
                                 @else
-                                    <a href="{{ route('user.login') }}">
+                                    <a href="{{ route('user.login','user') }}">
                                         <li class="user-title"><span>Login & Register</span> </li>
                                     </a>
 

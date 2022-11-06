@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\RegisterRequest;
+use App\Rules\MatchOldPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -20,6 +21,11 @@ class AuthController extends Controller
 
     public function loginSubmit(Request $request)
     {
+        $request->validate([
+                'email'=>'required|email',
+                'password'=>['required'] ,
+            ]);
+            // dd($request->user());
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             Session::put('user', $request->email);
             // dd(Session::get('url.intented'));
