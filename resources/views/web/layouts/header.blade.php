@@ -255,7 +255,7 @@
                                     @endif
 
                                 @else
-                                    <a href="{{ route('user.login','user') }}">
+                                    <a href="{{ route('login','user') }}">
                                         <li class="user-title"><span>Login & Register</span> </li>
                                     </a>
 

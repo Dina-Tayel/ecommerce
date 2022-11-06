@@ -19,7 +19,7 @@ class User
         if( empty(session('user'))  )
         {
             // return 'empty' ;
-            return redirect()->route('user.login') ;      
+            return redirect()->route('login') ;      
         }
             // return 'not empty' ;
             return $next($request);

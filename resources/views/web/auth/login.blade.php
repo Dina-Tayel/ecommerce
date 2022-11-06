@@ -26,7 +26,7 @@
     
                            
                             {{-- <form action="{{ route('user.submit')}}" method="post"> --}}
-                                <form method="POST" action="{{ route('admin.login','user') }}">
+                                <form method="POST" action="{{ route('login','user') }}">
                                 @csrf
                                 <div class="form-group">
                                     <input type="email" class="form-control" name="email" value="{{ old('email')}}" id="username" placeholder="Email or Username">

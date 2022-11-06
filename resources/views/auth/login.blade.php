@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="p-2 mt-4">
                                    
-                                    <form method="POST" action="{{ route('admin.login','admin') }}">
+                                    <form method="POST" action="{{ route('login','admin') }}">
                                         @csrf                
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Email</label>

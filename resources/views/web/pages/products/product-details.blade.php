@@ -416,7 +416,7 @@
                                         </form>
                                     @else
                                         <p class="py-2"> Tou need to login for writing review . <a
-                                                href="{{ route('user.login') }}">Click Here ! </a> to login</p>
+                                                href="{{ route('login','user') }}">Click Here ! </a> to login</p>
                                         @endif
                                     </div>
                                 </div>

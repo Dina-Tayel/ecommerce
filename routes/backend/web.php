@@ -20,7 +20,7 @@ use GuzzleHttp\Middleware;
 // login
 Auth::routes([ 'login' => false , 'logout'=>false]);
 
-Route::get('login/{type}', [LoginController::class , 'loginForm'])->name('admin.login');
+Route::get('login/{type}', [LoginController::class , 'loginForm'])->name('login');
 
 Route::post('login/{type}', 'App\Http\Controllers\Auth\LoginController@login');
 
