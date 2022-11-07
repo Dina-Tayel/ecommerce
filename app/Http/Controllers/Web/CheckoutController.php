@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Requests\Web\Checkout1Request;
 use App\Mail\OrderResponseMail;
+use App\Models\Product;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
@@ -63,7 +64,7 @@ class CheckoutController extends Controller
         // ]);
        session()->put('sharge',[
         'delivery_charge' => $request->shipping_charge,
-            'payment_status' => 'paid',
+            'payment_status' => 'unpaid',
       ]);
         // session()->push('checkout1', [
         //     'delivery_charge' => $request->shipping_charge,
@@ -93,8 +94,10 @@ class CheckoutController extends Controller
 
     public function confirm(Request $request)
     {
+
         session()->put('previous_page', 'checkout3Store');
         $coupon = session()->has('coupon') ? session()->get('checkout1') : 0;
+
         if (session()->has('coupon')  && empty(session()->has('checkout1'))) {
             $total_amount = number_format(str_replace(',', '', Cart::subtotal()) - session()->get('coupon')['value'], 2);
         } elseif (session()->has('checkout1') && empty(session()->has('coupon'))) {
@@ -139,6 +142,12 @@ class CheckoutController extends Controller
             "saddress" => session()->get('checkout1')['saddress'],
             "spostcode" =>  session()->get('checkout1')['spostcode'],
         ]);
+        foreach(Cart::instance('shopping')->content() as $item) 
+      {
+        $product_ids[] =$item->id ;
+        $product = Product::find($item->id);
+        $order->products()->attach($product , ['quantity'=>$item->qty]);
+      } 
         if ($order) {
             Cart::instance('shopping')->destroy();
             Session::forget('coupon');

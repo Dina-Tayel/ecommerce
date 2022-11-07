@@ -45,7 +45,7 @@ class BannerDataTable extends DataTable
                 return $user->created_at ? with(new Carbon($user->created_at))->format('m/d/Y') : '';
             })
             ->editColumn('updated_at', function ($user) {
-                return $user->updated_at ? with(new Carbon($user->updated_at))->format('Y/m/d') : '';;
+                return $user->updated_at ? with(new Carbon($user->updated_at))->format('Y/m/d') : '';
             })
             ->filterColumn('created_at', function ($query, $keyword) {
                 $query->whereRaw("DATE_FORMAT(created_at,'%m/%d/%Y') like ?", ["%$keyword%"]);

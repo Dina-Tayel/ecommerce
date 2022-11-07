@@ -12,10 +12,11 @@ use Illuminate\Http\Request;
 class ShippingController extends Controller
 {
     public $shippingService ; 
+
     public function __construct(ShippingService $shippingService)
     {
         $this->shippingService = $shippingService ;
-        
+
     }
     public function index(ShippingDataTable $shippingDataTable)
     {

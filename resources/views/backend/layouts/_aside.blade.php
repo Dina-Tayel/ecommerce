@@ -147,4 +147,24 @@
         </div>
     </li> <!-- end shipping Menu -->
 
+    {{-- orders --}}
+    <li class="nav-item">
+        <a class="nav-link menu-link" href="#sidebarOrder" data-bs-toggle="collapse" role="button"
+            aria-expanded="false" aria-controls="sidebarOrder">
+            <i class="ri-riding-line"></i> <span data-key="t-dashboards">Order</span>
+        </a>
+        <div class="collapse menu-dropdown" id="sidebarOrder">
+            <ul class="nav nav-sm flex-column">
+
+                <li class="nav-item">
+                    <a href="{{ route('order.index') }}" class="nav-link" data-key="t-ecommerce"> All orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('order.create') }}" class="nav-link" data-key="t-ecommerce"> create
+                        order </a>
+                </li>
+            </ul>
+        </div>
+    </li> <!-- end orders Menu -->
 </ul>

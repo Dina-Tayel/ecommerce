@@ -69,5 +69,10 @@ class Product extends Model
     {
         return $this->hasMany(ProductReview::class , 'product_id' , 'id');
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class , 'product_orders')->withPivot('quantity')->withTimestamps() ;
+    }
     
 }

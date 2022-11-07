@@ -14,6 +14,7 @@ use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Auth\UpdateUserProfileInformation;
 use App\Http\Controllers\Backend\CouponController;
+use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ShippingController;
 use GuzzleHttp\Middleware;
 
@@ -72,5 +73,7 @@ Route::group(['prefix' => 'admin' , 'middleware'=>'auth:admin'], function () {
     Route::resource('shipping',ShippingController::class);
     Route::get('/shipping-toggle/{id}', [ShippingController::class, 'toggle'])->name('shipping.toggle');
 
-     
+     //oredrs
+     Route::resource('order', OrderController::class);
+     Route::post('/order-status' , [OrderController::class , 'orderStatus'])->name('order.status') ;
 });
